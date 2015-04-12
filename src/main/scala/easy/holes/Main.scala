@@ -12,15 +12,13 @@ object Main {
   }
 
   def countHoles(chars: Array[Char]): Int = {
-    var count = 0
-    for (c <- chars) {
-      count += (c match {
+    if (chars.isEmpty) 0
+    else {
+      countHoles(chars.tail) + (chars.head match {
         case 'Q' | 'R' | 'O' | 'P' | 'A' | 'D' => 1
         case 'B' => 2
         case _ => 0
       })
     }
-
-    count
   }
 }
