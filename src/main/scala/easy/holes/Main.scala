@@ -11,14 +11,12 @@ object Main {
     }
   }
 
-  def countHoles(chars: Array[Char]): Int = {
-    if (chars.isEmpty) 0
-    else {
-      countHoles(chars.tail) + (chars.head match {
-        case 'Q' | 'R' | 'O' | 'P' | 'A' | 'D' => 1
-        case 'B' => 2
-        case _ => 0
-      })
-    }
+  def countHoles(chars: Array[Char]): Int = chars match {
+    case Array() => 0
+    case _ => countHoles(chars.tail) + (chars.head match {
+      case 'Q' | 'R' | 'O' | 'P' | 'A' | 'D' => 1
+      case 'B' => 2
+      case _ => 0
+    })
   }
 }
