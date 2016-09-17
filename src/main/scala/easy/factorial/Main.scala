@@ -12,7 +12,7 @@ object Main {
     var count = 0
     var m = n
     while (m != 0) {
-      // Firstly, count all the factors of 5.
+      // First, count all the factors of 5.
       // Next, count all the 5x5.
       // Then, go on counting all the 5x5x5. And so on.
       // TODO: Why could we do so? What's the relationship?
