@@ -1,13 +1,15 @@
 package easy.holes
 
+import scala.io.StdIn
+
 /**
  * http://www.codechef.com/problems/HOLES
  */
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
+    val testCount = StdIn.readInt()
     for (i <- 0 until testCount) {
-      println(countHoles(readLine().toCharArray))
+      println(countHoles(StdIn.readLine().toCharArray))
     }
   }
 

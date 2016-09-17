@@ -1,17 +1,19 @@
 package easy.tlg
 
+import scala.io.StdIn
+
 /**
  * http://www.codechef.com/problems/TLG
  */
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
+    val testCount = StdIn.readInt()
     var lead1 = 0
     var lead2 = 0
     var prevScore1 = 0
     var prevScore2 = 0
     for (i <- 0 until testCount) {
-      val scores = readLine().split(" ")
+      val scores = StdIn.readLine().split(" ")
       val score1 = scores(0).toInt + prevScore1
       prevScore1 = score1
 

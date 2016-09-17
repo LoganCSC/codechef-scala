@@ -1,8 +1,10 @@
 package easy.factorial
 
+import scala.io.StdIn
+
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
+    val testCount = StdIn.readInt()
     for (i <- 0 until testCount) {
       println(countTrailingZeros(readInt()))
     }

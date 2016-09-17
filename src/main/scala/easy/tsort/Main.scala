@@ -1,16 +1,17 @@
 package easy.tsort
 
 import scala.collection.mutable.ListBuffer
+import scala.io.StdIn
 
 /**
  * http://www.codechef.com/problems/TSORT
  */
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
+    val testCount = StdIn.readInt()
     val list = new ListBuffer[Int]()
     for (i <- 0 until testCount) {
-      list += readInt()
+      list += StdIn.readInt()
     }
 
     val sorted = quickSort(list.toList)

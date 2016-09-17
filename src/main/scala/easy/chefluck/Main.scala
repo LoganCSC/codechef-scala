@@ -1,13 +1,15 @@
 package easy.chefluck
 
+import scala.io.StdIn
+
 /**
  * http://www.codechef.com/problems/CHEFLUCK
  */
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
+    val testCount = StdIn.readInt()
     for (i <- 0 until testCount) {
-      println(count4(readInt()))
+      println(count4(StdIn.readInt()))
     }
   }
 
