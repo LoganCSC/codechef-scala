@@ -5,10 +5,11 @@ package easy.doublestrings
  */
 object Main {
   def main(args: Array[String]) {
-    val testCount = readInt()
-    for (i <- 0 until testCount) {
+    val num = readInt()
+    for (i <- 0 until num) {
       val palindromeSize = readInt()
-      println(if (palindromeSize % 2 == 0) palindromeSize else palindromeSize - 1)
+      val result = if (palindromeSize % 2 == 0) palindromeSize else palindromeSize - 1
+      println(result)
     }
   }
 }
