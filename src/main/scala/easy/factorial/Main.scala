@@ -6,7 +6,7 @@ object Main {
   def main(args: Array[String]) {
     val testCount = StdIn.readInt()
     for (i <- 0 until testCount) {
-      println(countTrailingZeros(readInt()))
+      println(countTrailingZeros(StdIn.readInt()))
     }
   }
 
@@ -17,7 +17,6 @@ object Main {
       // First, count all the factors of 5.
       // Next, count all the 5x5.
       // Then, go on counting all the 5x5x5. And so on.
-      // TODO: Why could we do so? What's the relationship?
       m /= 5
       count += m
     }
