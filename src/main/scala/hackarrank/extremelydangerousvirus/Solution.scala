@@ -10,7 +10,7 @@ import scala.io.StdIn
  */
 object Solution {
 
-  // The constant to mod by to keep power fucntion from exploding
+  // The constant to mod by to keep power function from exploding
   val C = 1000000007L
   // dynamic programming cache
   val cache = mutable.Map[(BigDecimal, Long), BigDecimal]()
@@ -21,9 +21,7 @@ object Solution {
   }
 
   def expNumCells(a: Int, b: Int, t: Long): Long = {
-    val base: BigDecimal = (a + b) / 2.0
-    val result: BigDecimal = myPow(base, t)
-    (result % C).toLong
+    myPow((a + b) / 2.0, t).toLong
   }
 
   def myPow(base: BigDecimal, exp: Long): BigDecimal = {
@@ -35,7 +33,6 @@ object Solution {
     else {
       val pow1 = exp / 2
       val pow2 = exp - pow1
-      //println("base = " + base +" p1 = " + pow1 + " p2 = " + pow2)
       val result = (myPow(base, pow1) % C * myPow(base, pow2)) % C
       cache.put(key, result)
       result
