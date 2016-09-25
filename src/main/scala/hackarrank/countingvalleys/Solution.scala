@@ -3,12 +3,11 @@ package hackarrank.countingvalleys
 import scala.io.StdIn
 
 /**
- * http://www.codechef.com/problems/TLG
+ * https://www.hackerrank.com/contests/rookierank/challenges/counting-valleys
  */
 object Solution {
 
   def main(args: Array[String]) {
-    //println(io.Source.stdin.getLines().take(2).map(_.toInt).sum)
     val num = StdIn.readInt()
     val steps = StdIn.readLine()
     println(countValleys(steps))
@@ -17,7 +16,6 @@ object Solution {
   def countValleys(stepsStr: String): Int = {
     val steps = stepsStr.toList
      var numValleys = 0
-    //var aboveSeaLevel = true
     var lastHeight = 0
     var height = 0
 
