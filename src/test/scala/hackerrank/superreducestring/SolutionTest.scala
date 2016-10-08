@@ -1,4 +1,4 @@
-package hackerrank.superreducestring.countingvalleys
+package hackerrank.superreducestring
 
 import hackarrank.superreducedstring.Solution
 import org.scalatest.FunSuite
@@ -15,5 +15,6 @@ class SolutionTest extends FunSuite {
     assert(Solution.reduce("abbc") == "ac")
     assert(Solution.reduce("abcc") == "ab")
     assert(Solution.reduce("abccb") == "a")
+    assert(Solution.reduce("aasdfsalsssidddjkddjdjdjssjssjsdab") == "sdfsalsidjkjdjdjsdab")
   }
 }
