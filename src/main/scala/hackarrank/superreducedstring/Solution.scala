@@ -14,22 +14,15 @@ object Solution {
     println(if (result == "") "Empty String" else result)
   }
 
-  def reduce(str: String): String = {
-    val reduced = doReduce(str)
-    if (str == reduced) {
-      return str
-    }
-    reduce(reduced)
-  }
-
   /** wald the string, making reductions when possible */
-  def doReduce(str: String): String = {
+  def reduce(str: String): String = {
     val buf = new ListBuffer[Char]()
     buf.append(str.toList:_*)
     var idx = 0
     while (idx < buf.length - 1 && idx >= 0) {
       if (buf(idx) == buf(idx + 1)) {
         buf.remove(idx, 2)
+        if (idx > 0) idx -= 1
       } else {
         idx += 1
       }

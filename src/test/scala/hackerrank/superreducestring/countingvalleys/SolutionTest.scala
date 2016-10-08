@@ -9,7 +9,7 @@ import org.scalatest.FunSuite
 class SolutionTest extends FunSuite {
   test("test reduce strings") {
     assert(Solution.reduce("UDDDDUUUU") == "U")
-    //assert(Solution.reduce("UDDDDUUUUU") == "")
+    assert(Solution.reduce("UDDDDUUUUU") == "")
     assert(Solution.reduce("abc") == "abc")
     assert(Solution.reduce("aabc") == "bc")
     assert(Solution.reduce("abbc") == "ac")
