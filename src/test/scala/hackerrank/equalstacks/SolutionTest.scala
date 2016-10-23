@@ -8,6 +8,19 @@ import org.scalatest.FunSuite
   */
 class SolutionTest extends FunSuite {
 
+  test("Given test case from contest") {
+
+    val stacks = new CylinderStackList(Seq( Array(3, 2, 1, 1, 1), Array(4, 3, 2), Array(1, 1, 4, 1)))
+
+    assert(!stacks.allHeightsEqual())
+    assert(stacks.getMaxHeight == 9)
+
+    stacks.removeBlocksUntilEqual()
+
+    assert(stacks.allHeightsEqual())
+    assert(stacks.getMaxHeight == 5)
+  }
+
   test("test equal stacks when 2 stacks") {
 
     val stacks = new CylinderStackList(Seq(Array(3, 2), Array(5, 2)))

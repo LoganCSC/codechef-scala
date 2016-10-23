@@ -8,13 +8,13 @@ import scala.io.StdIn
 object Solution {
 
   def main(args: Array[String]) {
-    val stackCounts = StdIn.readLine()
-    val cylinderHeights: Seq[Array[Int]] = for (n <- stackCounts) yield {
-      StdIn.readLine().split(" ").map(_.toInt)
-    }
-    val stacks = new CylinderStackList(cylinderHeights)
-
-
+    val stacks = new CylinderStackList(readHeights)
+    stacks.removeBlocksUntilEqual()
     println(stacks.getMaxHeight)
+  }
+
+  private def readHeights = {
+    val stackCounts = StdIn.readLine().split(" ")
+    for (n <- stackCounts) yield StdIn.readLine().split(" ").map(_.toInt)
   }
 }
