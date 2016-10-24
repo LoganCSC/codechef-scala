@@ -21,7 +21,7 @@ class SolutionTest extends FunSuite {
 
   test("test largest rectangle for simple pyramid") {
     val region = new LinearHeightField(Array(2, 3, 4, 5, 4, 3, 2, 1))
-    assert(region.findMaxArea() == 14)
+    assert(region.findMaxArea() == 15)
   }
 
   test("test largest rectangle for V") {
@@ -48,5 +48,11 @@ class SolutionTest extends FunSuite {
     val region = new LinearHeightField(
       Array(20, 30, 25, 15, 3, 60, 5, 4, 30, 30, 20, 20, 9, 1, 1, 1, 1, 8, 7, 10, 20, 30, 30, 28, 25))
     assert(region.findMaxArea() == 100)
+  }
+
+  test("test largest rectangle for long sequence") {
+    val region = new LinearHeightField(
+      Array(5, 100, 2, 2, 2, 3, 4, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 10, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 2, 3, 4, 10, 11, 12))
+    assert(region.findMaxArea() == 140)
   }
 }

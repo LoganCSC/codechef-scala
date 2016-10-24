@@ -42,13 +42,7 @@ class LinearHeightField(heights: Array[Int]) {
   private def lengthenByOne() = {
     endPosition += 1
     val htAtEnd = heights(endPosition)
-    if (heightCountMap.contains(htAtEnd)) {
-      heightCountMap = heightCountMap + (htAtEnd -> (heightCountMap(htAtEnd) + 1))
-    }
-    else {
-      heightCountMap += (htAtEnd -> 1)
-      if (htAtEnd < currentMinHeight) currentMinHeight = htAtEnd
-    }
+    addHeightToCountMap(htAtEnd)
     (endPosition - startPosition + 1) * currentMinHeight
   }
 
@@ -56,15 +50,9 @@ class LinearHeightField(heights: Array[Int]) {
     //println("shorten " + startPosition + " " + endPosition)
     if (startPosition < endPosition) {
       val firstHt = heights(startPosition)
-      if (heightCountMap(firstHt) == 1) {
-        heightCountMap -= firstHt
-        if (firstHt == currentMinHeight) {
-          currentMinHeight = heightCountMap.keys.min
-        }
-      } else {
-        heightCountMap = heightCountMap + (firstHt -> (heightCountMap(firstHt) - 1))
-      }
+      removeHeightFromCountMap(firstHt)
       startPosition += 1
+      removeFromRightElementsLessThanOrEqualTo(firstHt)
       //println("shortenFromLeft currMinHt = " + currentMinHeight)
     } else if (startPosition < heights.length - 1) {
       startPosition += 1
@@ -76,6 +64,36 @@ class LinearHeightField(heights: Array[Int]) {
     }
     (endPosition - startPosition + 1) * currentMinHeight
   }
+
+  private def removeFromRightElementsLessThanOrEqualTo(height: Int) = {
+    while (heights(endPosition) <= height && startPosition < endPosition) {
+      removeHeightFromCountMap(heights(endPosition))
+      endPosition -= 1
+    }
+  }
+
+  private def addHeightToCountMap(height: Int) = {
+    if (heightCountMap.contains(height)) {
+      heightCountMap = heightCountMap + (height -> (heightCountMap(height) + 1))
+    }
+    else {
+      heightCountMap += (height -> 1)
+      if (height < currentMinHeight) currentMinHeight = height
+    }
+  }
+
+  private def removeHeightFromCountMap(height: Int) = {
+    println("htMap = " + heightCountMap.toList.mkString(", ") + " about to remove " + height)
+    if (heightCountMap(height) == 1) {
+      heightCountMap -= height
+      if (height == currentMinHeight) {
+        currentMinHeight = heightCountMap.keys.min
+      }
+    } else {
+      heightCountMap = heightCountMap + (height -> (heightCountMap(height) - 1))
+    }
+  }
+
 
   /*
   private def oneShorterIsBetter(currentBest: Int): Boolean = {
