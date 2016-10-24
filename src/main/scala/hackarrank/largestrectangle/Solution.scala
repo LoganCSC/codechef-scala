@@ -9,9 +9,8 @@ object Solution {
 
   def main(args: Array[String]) {
     StdIn.readLine() // don't need first line
-    val region = new Region(StdIn.readLine().split(" ").map(_.toInt))
+    val region = new LinearHeightField(StdIn.readLine().split(" ").map(_.toInt))
     println(region.findMaxArea())
   }
-
 
 }
