@@ -10,16 +10,18 @@ class LinearHeightField(heights: Array[Int]) {
   var endPosition = 0
 
   def findMaxArea() = {
-    var best = currentMinHeight //heightList.head * heights.length
+    var best = currentMinHeight
+    var localBest = currentMinHeight
 
     while (startPosition < heights.length - 1) {
       // try to improve on best by reducing on the right
-      while (oneLongerIsBetter(best)) {
-        best = lengthenByOne()
+      while (oneLongerIsBetter(localBest)) {
+        localBest = lengthenByOne()
+        if (localBest > best) best = localBest
         //println(" new best after extending to [" + startPosition + ", " + endPosition +"] = " + best)
       }
-      val area = shortenFromLeftByOne()
-      if (area > best) best = area
+      localBest = shortenFromLeftByOne()
+      if (localBest > best) best = localBest
       //println("new best after shortening from left [" + startPosition + ", " + endPosition +"] = " + best)
     }
     best
