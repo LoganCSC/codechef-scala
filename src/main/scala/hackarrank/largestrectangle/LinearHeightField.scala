@@ -20,7 +20,7 @@ class LinearHeightField(heights: Array[Int]) {
         if (localBest > best) best = localBest
         //println(" new best after extending to [" + startPosition + ", " + endPosition +"] = " + best)
       }
-      localBest = shortenFromLeftByOne()
+      localBest = shortenFromLeftByOne(localBest)
       if (localBest > best) best = localBest
       //println("new best after shortening from left [" + startPosition + ", " + endPosition +"] = " + best)
     }
@@ -46,13 +46,15 @@ class LinearHeightField(heights: Array[Int]) {
     (endPosition - startPosition + 1) * currentMinHeight
   }
 
-  private def shortenFromLeftByOne(): Int = {
+  private def shortenFromLeftByOne(best: Int): Int = {
+    var localBest = best
     //println("shorten " + startPosition + " " + endPosition)
     if (startPosition < endPosition) {
       val firstHt = heights(startPosition)
       removeHeightFromCountMap(firstHt)
       startPosition += 1
-      removeFromRightElementsLessThanOrEqualTo(firstHt)
+      localBest = (endPosition - startPosition + 1) * currentMinHeight
+      localBest = shortenFromRight(localBest)
       //println("shortenFromLeft currMinHt = " + currentMinHeight)
     } else if (startPosition < heights.length - 1) {
       startPosition += 1
@@ -61,15 +63,19 @@ class LinearHeightField(heights: Array[Int]) {
       heightCountMap -= currentMinHeight
       currentMinHeight = heights(startPosition)
       heightCountMap = heightCountMap + (currentMinHeight -> 1)
+      localBest = (endPosition - startPosition + 1) * currentMinHeight
     }
-    (endPosition - startPosition + 1) * currentMinHeight
+    localBest
   }
 
-  private def removeFromRightElementsLessThanOrEqualTo(height: Int) = {
-    while (heights(endPosition) <= height && startPosition < endPosition) {
+  private def shortenFromRight(localBest: Int) = {
+    var newBest = localBest
+    while (oneShorterIsBetter(localBest)) {
       removeHeightFromCountMap(heights(endPosition))
       endPosition -= 1
+      newBest = (endPosition - startPosition + 1) * currentMinHeight
     }
+    newBest
   }
 
   private def addHeightToCountMap(height: Int) = {
@@ -95,16 +101,14 @@ class LinearHeightField(heights: Array[Int]) {
   }
 
 
-  /*
   private def oneShorterIsBetter(currentBest: Int): Boolean = {
     if (startPosition < endPosition) {
       val len = endPosition - startPosition
-      val minHt = heightList(minHeightIdx)
-      println("minHt="+ minHt)
-      val newMinHt = if (minHt == heights(endPosition) && heightCountMap(minHt) == 1)
-        heightList(minHeightIdx + 1) else minHt
-      val newArea = (len * newMinHt)
-      println("newArea = " + newArea + " curBest = " + currentBest)
+      println("minHt="+ currentMinHeight)
+      val newMinHt = if (currentMinHeight == heights(endPosition) && heightCountMap(currentMinHeight) == 1)
+        heightCountMap.keys.toList.sorted.apply(1) else currentMinHeight
+      val newArea = len * newMinHt
+      //println("newArea = " + newArea + " curBest = " + currentBest)
       newArea > currentBest
     }
     else false
@@ -114,12 +118,12 @@ class LinearHeightField(heights: Array[Int]) {
     val htAtEnd = heights(endPosition)
     if (heightCountMap(htAtEnd) == 1) {
       heightCountMap = heightCountMap - htAtEnd
-      if (htAtEnd == heightList(minHeightIdx))
-        minHeightIdx += 1
+      if (htAtEnd == currentMinHeight)
+        heightCountMap.keys.min
     }
     else heightCountMap = heightCountMap + (htAtEnd -> (heightCountMap(htAtEnd) - 1))
     endPosition -= 1
-    (endPosition - startPosition + 1) * heightList(minHeightIdx)
-  }*/
+    (endPosition - startPosition + 1) * currentMinHeight
+  }
 
 }
