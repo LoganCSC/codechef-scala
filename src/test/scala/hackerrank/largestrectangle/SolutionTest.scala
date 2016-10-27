@@ -1,6 +1,5 @@
 package hackerrank.largestrectangle
 
-import hackarrank.countingvalleys.Solution
 import hackarrank.largestrectangle.LinearHeightField
 import org.scalatest.FunSuite
 
@@ -41,7 +40,7 @@ class SolutionTest extends FunSuite {
 
   test("test largest rectangle for spike") {
     val region = new LinearHeightField(Array(2, 3, 5, 3, 600, 5, 4, 3))
-    assert(region.findMaxArea() == 21)
+    assert(region.findMaxArea() == 600)
   }
 
   test("test largest rectangle for trough") {
@@ -76,7 +75,7 @@ class SolutionTest extends FunSuite {
         1, 1, 1, 1, 2, 3, 4, 50, 60, 2, 3, 4, 6, 8, 8, 8, 9, 9, 9, 9, 9, 11, 11, 11, 11, 11, 10, 10, 10, 5, 5, 7, 7, 7, 8, 7,
         7, 7, 10, 7, 6, 5, 4, 3, 2, 20, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 11, 12, 13, 14, 15, 10, 5, 1, 1,
         1, 1, 1, 1, 2, 3, 4, 20, 2, 3, 4, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 7, 7, 7, 7, 10, 7, 6, 5, 4, 3, 2, 1, 1, 1, 1, 2, 3, 4, 12))
-    assert(region.findMaxArea() == 151)
+    assert(region.findMaxArea() == 188)
   }
 
   test("test largest rectangle for long random  field") {
@@ -89,4 +88,5 @@ class SolutionTest extends FunSuite {
       ))
     assert(region.findMaxArea() == 572) // 396)
   }
+
 }
