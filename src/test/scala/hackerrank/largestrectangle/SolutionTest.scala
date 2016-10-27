@@ -67,6 +67,29 @@ class SolutionTest extends FunSuite {
     assert(region.findMaxArea() == 60)
   }
 
+  test("test largest rectangle when flat") {
+    val region = new LinearHeightField(
+      Array(8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8))
+    assert(region.findMaxArea() == 160)
+  }
+
+  test("test largest rectangle when flat except at start") {
+    val region = new LinearHeightField(
+      Array(2, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8))
+    assert(region.findMaxArea() == 160)
+  }
+
+  test("test largest rectangle when flat except at middle") {
+    val region = new LinearHeightField(
+      Array(8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 3, 8, 8, 8, 8, 8, 8, 8, 8))
+    assert(region.findMaxArea() == 80)
+  }
+
+  test("test largest rectangle when flat except at end") {
+    val region = new LinearHeightField(
+      Array(8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4))
+    assert(region.findMaxArea() == 144)
+  }
 
   test("test largest rectangle for long field") {
     val region = new LinearHeightField(

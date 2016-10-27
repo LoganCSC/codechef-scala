@@ -10,30 +10,23 @@ class LinearHeightField(heights: Array[Int]) {
   var endPosition = 0
   var best = heights.length * minHeight
 
+
   def findMaxArea() = {
 
     while (startPosition < heights.length) {
-      var currentHt = heights(startPosition)
-      val area = findLargestAreaAt(startPosition, currentHt)
-      //println("largest area for ht="+ currentHt + " at pos "+ startPosition + " is " + area + "   best so far = "+ best)
-      if (area > best)
-        best = area
-
-      var nextPosition = startPosition
-      while (nextPosition < heights.length - 1 && (currentHt == minHeight)) {
-        nextPosition += 1
-        currentHt = heights(nextPosition)
-      }
-      if (nextPosition == startPosition)
-        nextPosition += 1
-      startPosition = nextPosition
+      val area = findLargestAreaAt(startPosition)
+      if (area > best) best = area
+      do  {
+        startPosition += 1
+      } while (startPosition < heights.length && heights(startPosition) == minHeight)
     }
 
     best
   }
 
   /** march outward from pos until best area is found */
-  private def findLargestAreaAt(pos: Int, currentHt: Int) = {
+  private def findLargestAreaAt(pos: Int) = {
+    val currentHt = heights(pos)
     var low = pos
     var high = pos
     while (low > 0 && heights(low - 1) >= currentHt) low -= 1
