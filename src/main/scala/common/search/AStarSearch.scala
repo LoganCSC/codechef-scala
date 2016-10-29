@@ -33,7 +33,7 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
   /** Provides the value for the lowest cost path from the start state to the specified goal state (g score) */
   protected var pathCost: mutable.Map[S, Integer] = _
 
-  protected var solution: Node[S, T] = _
+  protected var solution: Option[Node[S, T]] = None
 
   /** number of steps that it took to find solution */
   protected var numTries: Long = 0L
@@ -61,16 +61,13 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
   /**
     * @return a sequence of transitions leading from the initial state to the goal state.
     */
-  def solve: Seq[T] = {
+  def solve: Option[Seq[T]] = {
     val startTime: Long = System.currentTimeMillis
     initialize()
     val solutionState: Option[Node[S, T]] = search
-    var pathToSolution: Seq[T] = null
-    var solution: Option[S] = None
-    if (solutionState.isDefined) {
-      pathToSolution = solutionState.get.asTransitionList
-      solution = Some(solutionState.get.getState)
-    }
+    val pathToSolution: Option[Seq[T]] = if (solutionState.isDefined) Some(solutionState.get.asTransitionList) else None
+    val solution: Option[S] = if (solutionState.isDefined) Some(solutionState.get.getState) else None
+
     val elapsedTime: Long = System.currentTimeMillis - startTime
     searchSpace.finalRefresh(pathToSolution, solution, numTries, elapsedTime)
     pathToSolution
@@ -85,8 +82,7 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
   }
 
   /** @return the solution - null until it is found */
-  def getSolution: Seq[T] = if (solution == null) null
-  else solution.asTransitionList
+  def getSolution: Option[Seq[T]] = if (solution.isDefined) Some(solution.get.asTransitionList) else None
 
   /** Tell the search to stop */
   def stop() {
@@ -100,8 +96,8 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
     */
   protected def search: Option[Node[S, T]] = {
     while (continueSearching) {
-      val currentNode: Node[S, T] = processNext(openQueue.pop)
-      if (currentNode != null) return Some(currentNode)
+      val currentNode: Option[Node[S, T]] = processNext(openQueue.pop)
+      if (currentNode.isDefined) return currentNode
     }
     None // failure
   }
@@ -109,13 +105,14 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
   private[search] def continueSearching: Boolean = nodesAvailable && !stopped
 
   /** process the next node on the priority queue */
-  private[search] def processNext(currentNode: Node[S, T]): Node[S, T] = {
+  private[search] def processNext(currentNode: Node[S, T]): Option[Node[S, T]] = {
     val currentState: S = currentNode.getState
     searchSpace.refresh(currentState, numTries)
     if (searchSpace.isGoal(currentState)) {
       // the extra check for a better path is needed when running concurrently
-      if (solution == null || currentNode.getPathCost < solution.getPathCost) solution = currentNode
-      return currentNode // success
+      if (solution.isEmpty || currentNode.getPathCost < solution.get.getPathCost)
+        solution = Some(currentNode)
+      return Some(currentNode) // success
     }
     visited.put(currentState, currentNode)
     val transitions: Seq[T] = searchSpace.legalTransitions(currentState)
@@ -134,7 +131,7 @@ class AStarSearch[S, T] protected() extends ISearcher[S, T] {
         }
       }
     }
-    null
+    None
   }
 
   protected def nodesAvailable: Boolean = !openQueue.isEmpty

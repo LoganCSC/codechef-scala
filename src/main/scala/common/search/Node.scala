@@ -37,7 +37,7 @@ class Node[S, T](val state: S, val transition: Option[T], var previous: Option[N
     * @param estimatedFutureCost the cost of getting here plus the estimated future cost to get to the finish.
     */
   def this(initialState: S, estimatedFutureCost: Int) {
-    this(initialState, null, null, 0, estimatedFutureCost)
+    this(initialState, None, None, 0, estimatedFutureCost)
   }
 
   /** @return state in the global search space */
@@ -59,10 +59,9 @@ class Node[S, T](val state: S, val transition: Option[T], var previous: Option[N
   def compareTo(otherNode: Node[S, T]): Int = getEstimatedFutureCost - otherNode.getEstimatedFutureCost
 
   override def equals(other: Any): Boolean = {
-    if (this.equals(other)) return true
-    if (other == null || (getClass ne other.getClass)) return false
-    val node: Node[_, _] = other.asInstanceOf[Node[_, _]]
-    state == node.state
+    other match {
+      case other: Node[S, T] => state == other.state
+    }
   }
 
   override def hashCode: Int = state.hashCode
