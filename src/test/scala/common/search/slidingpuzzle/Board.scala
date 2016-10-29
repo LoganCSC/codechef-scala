@@ -54,7 +54,7 @@ class Board {
   private var blocks: Array[Byte] = _
   private var side: Byte = 0
   private var hamming1: Byte = 0
-  private var manhattan: Int = 0
+  var manhattan: Int = 0
   private var hashCode1: Int = 0
 
   def this(blocks: Array[Byte]) {
