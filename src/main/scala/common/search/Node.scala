@@ -1,3 +1,4 @@
+/** Copyright by Barry G. Becker, 2016. Licensed under MIT License: http://www.opensource.org/licenses/MIT  */
 package common.search
 
 /**
@@ -7,7 +8,7 @@ package common.search
   * S is the state type
   * T is the transition from one state to the next.
   *
-  * Represents a state and how we got to it from the last state.
+  * Represents a state and how we got to it from the last state. Immutable
   *
   * @param state               the current state state
   * @param transition          the transformation that got to this state
@@ -18,7 +19,6 @@ package common.search
   *
   * @author Barry Becker
   */
-//@Immutable
 class Node[S, T](val state: S, val transition: Option[T], var previous: Option[Node[S, T]], val pathCost: Int,
                  val estimatedFutureCost: Int) extends Comparable[Node[S, T]] {
 

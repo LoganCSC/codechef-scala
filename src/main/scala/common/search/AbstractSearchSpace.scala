@@ -1,3 +1,4 @@
+/** Copyright by Barry G. Becker, 2016. Licensed under MIT License: http://www.opensource.org/licenses/MIT  */
 package common.search
 
 import scala.collection.mutable
@@ -22,7 +23,7 @@ abstract class AbstractSearchSpace[S, T](var initialState: S) extends SearchSpac
   def refresh(state: S, numTries: Long) {
   }
 
-  def finalRefresh(path: Seq[T], state: S, numTries: Long, elapsedMillis: Long) {
+  def finalRefresh(path: Seq[T], state: Option[S], numTries: Long, elapsedMillis: Long) {
     // nothing be default
   }
 }

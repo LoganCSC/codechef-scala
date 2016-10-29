@@ -1,7 +1,7 @@
+/** Copyright by Barry G. Becker, 2016. Licensed under MIT License: http://www.opensource.org/licenses/MIT  */
 package common.search
 
-import java.util.List
-import java.util.Set
+import scala.collection.mutable
 
 /**
   * Represents the global search space of all states.
@@ -39,7 +39,7 @@ trait SearchSpace[S, T] extends Refreshable[S, T] {
     * @param seen  Map of seen states.
     * @return true if the specified state was already seen (possibly taking into account symmetries).
     */
-  def alreadySeen(state: S, seen: Set[S]): Boolean
+  def alreadySeen(state: S, seen: mutable.Set[S]): Boolean
 
   /**
     * @return estimate of the cost to reach the goal from the specified state.

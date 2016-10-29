@@ -1,6 +1,5 @@
 package easy.chefdetective
 
-import easy.chefdetective.Main
 import org.scalatest.FunSuite
 
 class Main$Test extends FunSuite {

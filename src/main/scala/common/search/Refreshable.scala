@@ -1,3 +1,4 @@
+/** Copyright by Barry G. Becker, 2016. Licensed under MIT License: http://www.opensource.org/licenses/MIT  */
 package common.search
 
 
@@ -23,5 +24,5 @@ trait Refreshable[S, T] {
     * @param numTries      number of tries it took to find that final state.
     * @param elapsedMillis number of milliseconds it took to find the solution.
     */
-  def finalRefresh(path: Seq[T], state: S, numTries: Long, elapsedMillis: Long)
+  def finalRefresh(path: Seq[T], state: Option[S], numTries: Long, elapsedMillis: Long)
 }
