@@ -1,7 +1,7 @@
 package hackarrank.castleonthegrid
 
-import common.geometry.Location
-import common.search.{AStarSearch, HeapPriorityQueue, SearchSpace, UpdatablePriorityQueue}
+import common.Location
+
 
 /** Uses a naive brute force approach */
 class SimpleCastleSolver(var startState: Board) {

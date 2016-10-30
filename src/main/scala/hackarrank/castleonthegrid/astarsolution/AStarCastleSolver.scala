@@ -1,6 +1,7 @@
-package hackarrank.castleonthegrid
+package hackarrank.castleonthegrid.astarsolution
 
 import common.search.{AStarSearch, HeapPriorityQueue, SearchSpace, UpdatablePriorityQueue}
+import hackarrank.castleonthegrid.{Board, Transition}
 
 /** Employs A* search strategy to find optimal number of steps. Probably overkill. */
 class AStarCastleSolver(var startState: Board,

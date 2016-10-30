@@ -1,4 +1,6 @@
-package hackarrank.castleonthegrid
+package hackarrank.castleonthegrid.astarsolution
+
+import hackarrank.castleonthegrid.Board
 
 /**
   * Immutable Node for a state in the global search space.

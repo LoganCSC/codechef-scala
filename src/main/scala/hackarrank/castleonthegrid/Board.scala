@@ -1,6 +1,7 @@
 package hackarrank.castleonthegrid
 
-import common.geometry.{IntLocation, Location}
+import common.Location
+
 
 /**
   * Maintains the current position on the immutable grid and calculates possible next moves.
@@ -13,10 +14,10 @@ class Board(val grid: Grid, val currentPosition: Location) {
   /** This could be improved by looking to see if there is an X in the way. If so then min is 4
     * @return a lower bound on the number of steps that it will take to reach the goal */
   def estimatedStepsToGoal: Int = {
-    if (currentPosition.getRow == grid.goal.row) {
-      if (currentPosition.getCol == grid.goal.col) 0 else 1
+    if (currentPosition.row == grid.goal.row) {
+      if (currentPosition.col == grid.goal.col) 0 else 1
     }
-    else if (currentPosition.getCol == grid.goal.col) 1 else 2
+    else if (currentPosition.col == grid.goal.col) 1 else 2
   }
 
   /**
@@ -26,33 +27,33 @@ class Board(val grid: Grid, val currentPosition: Location) {
   def getNeighborTransitions: List[Transition] = {
     var neighbors: List[Transition] = Nil
 
-    var i: Int = currentPosition.getRow
-    var j: Int = currentPosition.getCol
+    var i: Int = currentPosition.row
+    var j: Int = currentPosition.col
 
     while (i + 1 < grid.size && grid.isOpen(i + 1, j)) {   // march east
-      neighbors :+= new Transition(new IntLocation(i + 1, j))
+      neighbors :+= new Transition(new Location(i + 1, j))
       i += 1
     }
 
-    i = currentPosition.getRow
+    i = currentPosition.row
     while (i > 0 && grid.isOpen(i - 1, j)) {             // march west
-      neighbors :+= new Transition(new IntLocation(i - 1, j))
+      neighbors :+= new Transition(new Location(i - 1, j))
       i -= 1
     }
 
-    i = currentPosition.getRow
+    i = currentPosition.row
     while (j + 1 < grid.size && grid.isOpen(i, j + 1) ) { // march south
-      neighbors :+= new Transition(new IntLocation(i, j + 1))
+      neighbors :+= new Transition(new Location(i, j + 1))
       j += 1
     }
 
-    j = currentPosition.getCol
+    j = currentPosition.col
     while (j > 0 && grid.isOpen(i, j - 1) ) {            // march north
-      neighbors :+= new Transition(new IntLocation(i, j - 1))
+      neighbors :+= new Transition(new Location(i, j - 1))
       j -= 1
     }
 
-    //println("from " + currentPosition + " nbrs = "+ neighbors.mkString(", "))
+    println("from " + currentPosition + " nbrs = "+ neighbors.mkString(", "))
     neighbors
   }
 

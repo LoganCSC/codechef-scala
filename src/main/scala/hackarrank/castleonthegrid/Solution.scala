@@ -1,6 +1,6 @@
 package hackarrank.castleonthegrid
 
-import common.geometry.IntLocation
+import common.Location
 
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
@@ -13,7 +13,6 @@ object Solution {
   def main(args: Array[String]) {
 
     val board = readBoard()
-    //val solver = new AStarCastleSolver(board)
     val solver = new SimpleCastleSolver(board)
     println(solver.moves)
   }
@@ -25,8 +24,8 @@ object Solution {
       matrix.append(StdIn.readLine().toArray)
     )
     val Array(startRow, startCol, goalRow, goalCol) = StdIn.readLine().split(" ").map(_.toInt)
-    val start = new IntLocation(startRow, startCol)
-    val goal = new IntLocation(goalRow, goalCol)
+    val start = new Location(startRow, startCol)
+    val goal = new Location(goalRow, goalCol)
 
     new Board(new Grid(start, goal, matrix.toArray), start)
   }

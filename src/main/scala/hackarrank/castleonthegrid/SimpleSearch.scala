@@ -1,6 +1,7 @@
 package hackarrank.castleonthegrid
 
-import common.geometry.Location
+
+import common.Location
 
 import scala.collection.mutable
 
@@ -53,7 +54,7 @@ class SimpleSearch(val startingState: Board) {
     */
   private def search: Option[Node] = {
     while (openQueue.nonEmpty) {
-      println("q = " + openQueue.mkString(", "))
+      //println("q = " + openQueue.mkString(", "))
       val currentNode: Option[Node] = processNext(openQueue.dequeue())
       if (currentNode.isDefined)
         return currentNode
@@ -85,7 +86,6 @@ class SimpleSearch(val startingState: Board) {
       None
     }
   }
-
 }
 
 

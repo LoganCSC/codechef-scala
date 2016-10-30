@@ -1,7 +1,8 @@
 package common.search.slidingpuzzle
 
 import java.util.Arrays
-import common.geometry.{ByteLocation, Location}
+
+import common.Location
 
 
 /**
@@ -130,19 +131,19 @@ class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
   def getNeighborTransitions: List[Transition] = {
     var neighbors: List[Transition] = Nil
     val spacePos: Location = getSpacePosition
-    val i: Int = spacePos.getRow
-    val j: Int = spacePos.getCol
-    if (i > 0) neighbors :+= new Transition(spacePos, new ByteLocation(i - 1, j))
-    if (i < side - 1) neighbors :+= new Transition(spacePos, new ByteLocation(i + 1, j))
-    if (j > 0) neighbors :+= new Transition(spacePos, new ByteLocation(i, j - 1))
-    if (j < side - 1) neighbors :+= new Transition(spacePos, new ByteLocation(i, j + 1))
+    val i: Int = spacePos.row
+    val j: Int = spacePos.col
+    if (i > 0) neighbors :+= new Transition(spacePos, new Location(i - 1, j))
+    if (i < side - 1) neighbors :+= new Transition(spacePos, new Location(i + 1, j))
+    if (j > 0) neighbors :+= new Transition(spacePos, new Location(i, j - 1))
+    if (j < side - 1) neighbors :+= new Transition(spacePos, new Location(i, j + 1))
     neighbors
   }
 
   def applyTransition(trans: Transition): Board = {
     val space: Location = trans.spacePosition
     val tile: Location = trans.tilePosition
-    move(space.getRow, space.getCol, tile.getRow, tile.getCol)
+    move(space.row, space.col, tile.row, tile.col)
   }
 
   /**
@@ -151,8 +152,8 @@ class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
   def neighbors: Iterable[Board] = {
     var neighbors: List[Board] = Nil
     val spacePos: Location = getSpacePosition
-    val i: Int = spacePos.getRow
-    val j: Int = spacePos.getCol
+    val i: Int = spacePos.row
+    val j: Int = spacePos.col
     if (i > 0) neighbors  :+= move(i, j, i - 1, j)
     if (i < side - 1) neighbors :+= move(i, j, i + 1, j)
     if (j > 0) neighbors :+= move(i, j, i, j - 1)
@@ -181,7 +182,7 @@ class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
     var i: Byte = 0
     for (i <- 0 until side) {
       for (j <- 0 until side) {
-        if (_blocks(i * side + j) == 0) return new ByteLocation(i, j)
+        if (_blocks(i * side + j) == 0) return new Location(i, j)
       }
     }
     throw new IllegalStateException("No space position!")

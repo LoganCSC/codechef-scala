@@ -1,6 +1,7 @@
-package hackarrank.castleonthegrid
+package hackarrank.castleonthegrid.astarsolution
 
 import common.search.AbstractSearchSpace
+import hackarrank.castleonthegrid.{Board, Transition}
 
 
 /**
