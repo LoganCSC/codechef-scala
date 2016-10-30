@@ -6,38 +6,19 @@ package common.geometry
   *
   * @author Barry Becker
   */
-class IntLocation extends Location {
-  private var row_ = 0
-  private var col_ = 0
+class IntLocation(val row: Int, val col: Int) extends Location {
 
   def this(loc: Location) {
-    this()
-    row_ = loc.getRow
-    col_ = loc.getCol
+    this(loc.getRow, loc.getCol)
   }
 
-  /**
-    * Constructs a new Location at the given coordinates.
-    *
-    * @param row the row coordinate.
-    * @param col the column coordinate.
-    */
-  def this(row: Int, col: Int) {
-    this()
-    row_ = row
-    col_ = col
-  }
+  def getRow: Int = row
+  def getCol: Int = col
+  def getX: Int = col
+  def getY: Int = row
 
-  override def getRow: Int = row_
+  def copy: Location = new IntLocation(row, col)
 
-  def getCol: Int = col_
-
-  def getX: Int = col_
-
-  def getY: Int = row_
-
-  def copy: Location = new IntLocation(row_, col_)
-
-  def incrementOnCopy(rowChange: Int, colChange: Int): Location = new IntLocation(row_ + rowChange, col_ + colChange)
+  def incrementOnCopy(rowChange: Int, colChange: Int): Location = new IntLocation(row + rowChange, col + colChange)
 }
 

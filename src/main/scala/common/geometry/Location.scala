@@ -22,15 +22,16 @@ abstract class Location {
     * @return true  The location's coordinates exactly equal this location's.
     */
   override def equals(location: Any): Boolean = {
-    if (!location.isInstanceOf[Location]) return false
-    val loc: Location = location.asInstanceOf[Location]
-    (loc.getRow == getRow) && (loc.getCol == getCol)
+    location match {
+      case loc: Location => (loc.getRow == getRow) && (loc.getCol == getCol)
+      case _ => false
+    }
   }
 
   /**
     * If override equals, should also override hashCode
     */
-  override def hashCode: Int = 100 * getRow + getCol
+  override def hashCode: Int = 255 * getRow + getCol
 
   /**
     * @param loc another location to measure distance from.

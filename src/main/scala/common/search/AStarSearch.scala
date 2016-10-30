@@ -18,45 +18,28 @@ import scala.collection.mutable
   * and do not recompute it from scratch. Hint: use a private constructor, that takes the distance as a param.
   * - Sort the neighbors so that the most promising is delivered first.
   *
+  * @param searchSpace the global search space containing initial and goal states.
+  * @param openQueue   the specific updatable priority queue to use. Candidate nodes to search on the frontier.
   * @author Barry Becker
   */
-class AStarSearch[S, T] protected() extends ISearcher[S, T] {
-
-  protected var searchSpace: SearchSpace[S, T] = _
-
-  /** States that have been visited, but they may be replaced if we can reach them by a better path */
-  private[search] var visited: mutable.Map[S, Node[S, T]] = _
-
-  /** Candidate nodes to search on the frontier. */
-  protected var openQueue: UpdatablePriorityQueue[S, T] = _
+class AStarSearch[S, T](val searchSpace: SearchSpace[S, T],
+                        val openQueue: UpdatablePriorityQueue[S, T] = new HeapPriorityQueue[S, T])
+  extends ISearcher[S, T] {
 
   /** Provides the value for the lowest cost path from the start state to the specified goal state (g score) */
-  protected var pathCost: mutable.Map[S, Integer] = _
+  protected var pathCost: mutable.Map[S, Integer] = new mutable.HashMap[S, Integer]
 
   protected var solution: Option[Node[S, T]] = None
 
   /** number of steps that it took to find solution */
   protected var numTries: Long = 0L
 
+  /** States that have been visited, but they may be replaced if we can reach them by a better path */
+  private[search] var visited: mutable.Map[S, Node[S, T]] = new mutable.HashMap[S, Node[S, T]]
+
   /** enables stopping the search via method call */
   private var stopped: Boolean = false
 
-  /**
-    * @param searchSpace the global search space containing initial and goal states.
-    * @param queue       the specific updatable priority queue to use.
-    */
-  def this(searchSpace: SearchSpace[S, T], queue: UpdatablePriorityQueue[S, T]) {
-    this()
-    this.searchSpace = searchSpace
-    visited = new mutable.HashMap[S, Node[S, T]]
-    openQueue = queue
-    pathCost = new mutable.HashMap[S, Integer]
-  }
-
-  /** @param searchSpace the global search space containing initial and goal states. */
-  def this(searchSpace: SearchSpace[S, T]) {
-    this(searchSpace, new HeapPriorityQueue[S, T])
-  }
 
   /**
     * @return a sequence of transitions leading from the initial state to the goal state.
