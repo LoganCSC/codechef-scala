@@ -56,7 +56,7 @@ class AStarSearch[S, T](val searchSpace: SearchSpace[S, T],
     pathToSolution
   }
 
-  private[search] def initialize() {
+  private def initialize() {
     stopped = false
     val startingState: S = searchSpace.initialState
     val startNode: Node[S, T] = new Node[S, T](startingState, searchSpace.distanceFromGoal(startingState))
@@ -85,10 +85,10 @@ class AStarSearch[S, T](val searchSpace: SearchSpace[S, T],
     None // failure
   }
 
-  private[search] def continueSearching: Boolean = nodesAvailable && !stopped
+  private def continueSearching: Boolean = !openQueue.isEmpty && !stopped
 
   /** process the next node on the priority queue */
-  private[search] def processNext(currentNode: Node[S, T]): Option[Node[S, T]] = {
+  private def processNext(currentNode: Node[S, T]): Option[Node[S, T]] = {
     val currentState: S = currentNode.getState
     searchSpace.refresh(currentState, numTries)
     if (searchSpace.isGoal(currentState)) {
@@ -100,12 +100,12 @@ class AStarSearch[S, T](val searchSpace: SearchSpace[S, T],
     visited.put(currentState, currentNode)
     val transitions: Seq[T] = searchSpace.legalTransitions(currentState)
     assert(transitions != null, "Could not find any transitions from " + currentState)
-    import scala.collection.JavaConversions._
+
     for (transition <- transitions) {
       val nbr: S = searchSpace.transition(currentState, transition)
-      if (!visited.containsKey(nbr)) {
+      if (!visited.contains(nbr)) {
         val estPathCost: Int = pathCost(currentState) + searchSpace.getCost(transition)
-        if (!pathCost.containsKey(nbr) || estPathCost < pathCost(nbr)) {
+        if (!pathCost.contains(nbr) || estPathCost < pathCost(nbr)) {
           val estFutureCost: Int = estPathCost + searchSpace.distanceFromGoal(nbr)
           val child: Node[S, T] = new Node[S, T](nbr, Some(transition), Some(currentNode), estPathCost, estFutureCost)
           pathCost.put(nbr, estPathCost)
@@ -116,8 +116,6 @@ class AStarSearch[S, T](val searchSpace: SearchSpace[S, T],
     }
     None
   }
-
-  protected def nodesAvailable: Boolean = !openQueue.isEmpty
 }
 
 

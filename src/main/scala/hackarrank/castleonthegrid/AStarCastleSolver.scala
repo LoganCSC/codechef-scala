@@ -2,11 +2,10 @@ package hackarrank.castleonthegrid
 
 import common.search.{AStarSearch, HeapPriorityQueue, SearchSpace, UpdatablePriorityQueue}
 
+/** Employs A* search strategy to find optimal number of steps. Probably overkill. */
+class AStarCastleSolver(var startState: Board,
+                        val queue: UpdatablePriorityQueue[Board, Transition] = new HeapPriorityQueue[Board, Transition]) {
 
-class CastleSolver(var startState: Board,
-                   val queue: UpdatablePriorityQueue[Board, Transition] = new HeapPriorityQueue[Board, Transition]) {
-
-  // find a solution to the initial board (using the A* algorithm)
   solveAssumingSolvable(startState, queue)
   private var solutionTransitions: Option[Seq[Transition]] = _
 

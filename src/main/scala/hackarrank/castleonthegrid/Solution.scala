@@ -13,7 +13,8 @@ object Solution {
   def main(args: Array[String]) {
 
     val board = readBoard()
-    val solver = new CastleSolver(board)
+    //val solver = new AStarCastleSolver(board)
+    val solver = new SimpleCastleSolver(board)
     println(solver.moves)
   }
 

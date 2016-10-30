@@ -1,11 +1,9 @@
 package hackerrank.castleonthegrid
 
 import common.geometry.IntLocation
-import hackarrank.castleonthegrid.{Board, CastleSolver, Grid}
-import hackarrank.largestrectangle.LinearHeightField
+import hackarrank.castleonthegrid.{AStarCastleSolver, Board, Grid, SimpleCastleSolver}
 import org.scalatest.FunSuite
 
-import scala.io.StdIn
 
 /**
   * @author Barry Becker
@@ -55,7 +53,7 @@ class SolutionTest extends FunSuite {
       ".......X..".toArray,
       ".X.XXXX.XX".toArray,
       ".X......X.".toArray,
-      ".XX.XXX.F.".toArray,
+      ".XX.XXX...".toArray,
       ".XX..XX...".toArray,
       ".X......X.".toArray
     )
@@ -75,7 +73,7 @@ class SolutionTest extends FunSuite {
       ".......X..".toArray,
       ".X.XXXX.XX".toArray,
       ".XX.....X.".toArray,
-      ".X..XXX.F.".toArray,
+      ".X..XXX...".toArray,
       ".XX..XX...".toArray,
       ".X......X.".toArray
     )
@@ -87,14 +85,15 @@ class SolutionTest extends FunSuite {
 
   def verifySolution(start: IntLocation, goal: IntLocation, matrix: Array[Array[Char]], expectedNumSteps: Int) = {
     val board = new Board(new Grid(start, goal, matrix), start)
-    val solver = new CastleSolver(board)
+    //val solver = new AStarCastleSolver(board)
+    val solver = new SimpleCastleSolver(board)
 
     if (expectedNumSteps == -1)
       assert(solver.moves == -1)
     else {
-      println("solution = " + solver.solution.map(_.currentPosition).mkString(", "))
+      //println("solution = " + solver.solution.map(_.currentPosition).mkString(", "))
+      println("solution = " + solver.transitions.mkString(", "))
       assertResult(expectedNumSteps) { solver.moves }
     }
   }
-
 }
