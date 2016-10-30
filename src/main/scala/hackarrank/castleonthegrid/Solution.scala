@@ -1,5 +1,7 @@
 package hackarrank.castleonthegrid
 
+import common.geometry.IntLocation
+
 import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
@@ -15,12 +17,15 @@ object Solution {
       matrix.append(StdIn.readLine().toArray)
     )
     val Array(startRow, startCol, goalRow, goalCol) = StdIn.readLine().split(" ").map(_.toInt)
+    val start = new IntLocation(startRow, startCol)
+    val goal = new IntLocation(goalRow, goalCol)
 
-    val grid = new Grid(matrix.toArray)
+    val board = new Board(new Grid(start, goal, matrix.toArray), start)
+
     //println(matrix.map(_.mkString("")).mkString("\n"))
 
 
-    println(grid.findNumStepsToGoal(startRow, startCol, goalRow, goalCol))
+    //println(grid.findNumStepsToGoal(startRow, startCol, goalRow, goalCol))
   }
 
 }

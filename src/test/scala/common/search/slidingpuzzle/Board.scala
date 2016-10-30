@@ -6,10 +6,9 @@ import common.geometry.{ByteLocation, Location}
 
 /**
   * Immutable.
-  * For a long time I could not solve puzzles beyond 31. Eventually I got to about 44, but no higher.
   *
   * Here is a list of performance enhancements that I made and how important they are:
-  * - calculated the changed the manhattan distance in the constructor, and cache it in a private property.
+  * - calculated the chang in the manhattan distance in the constructor, and cache it in a private property.
   * - use lazy calculation of the hamming distance. IOW, calculate the first time requested and cache it.
   * - made blocks use byte instead of int. short is probably best.
   * - use a 1D array instead of a 2D array for the blocks.
@@ -48,6 +47,7 @@ object Board {
 }
 
 class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
+
   private val _blocks: Array[Byte] = blocks
   private val side: Byte = Math.sqrt(_blocks.length).toByte
   private var _hamming: Byte = -1
@@ -140,8 +140,8 @@ class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
   }
 
   def applyTransition(trans: Transition): Board = {
-    val space: Location = trans.getSpacePosition
-    val tile: Location = trans.getTilePosition
+    val space: Location = trans.spacePosition
+    val tile: Location = trans.tilePosition
     move(space.getRow, space.getCol, tile.getRow, tile.getCol)
   }
 

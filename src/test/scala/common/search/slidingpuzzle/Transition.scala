@@ -3,15 +3,10 @@ package common.search.slidingpuzzle
 import common.geometry.Location
 
 /**
-  * Move from one board state to another by shifting 1 tile to the space position
-  *
+  * Move from one board state to another by shifting 1 tile to the space position. Immutable.
   * @author Barry Becker
   */
-class Transition(var spacePosition: Location, var tilePosition: Location) {
-
-  def getSpacePosition: Location = spacePosition
-
-  def getTilePosition: Location = tilePosition
+class Transition(val spacePosition: Location, val tilePosition: Location) {
 
   override def toString: String = "from " + tilePosition + " to " + spacePosition
 }
