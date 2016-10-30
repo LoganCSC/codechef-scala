@@ -119,7 +119,7 @@ abstract class SolverSuite extends FunSuite with BeforeAndAfter {
     val elapsed: Double = timer.getElapsedTime
     System.out.println("Elapsed time = " + elapsed + " seconds.")
     assert(elapsed < timeLimitSecs, "Took too long: " + elapsed + "seconds. Wanted " + timeLimitSecs)
-    assert(elapsed > (timeLimitSecs / 500.0), "TOO FAST!?!: " + elapsed + "seconds.")
+    assert(elapsed > (timeLimitSecs / 1000.0), "TOO FAST!?!: " + elapsed + "seconds.")
   }
 
   private def runCase(testCase: Case) {

@@ -37,11 +37,10 @@ class Solver(var startState: Board, val queue: UpdatablePriorityQueue[Board, Tra
   }
 
   /** @return true if the initial board is solvable */
-  def isSolvable: Boolean = solutionTransitions != null
+  def isSolvable: Boolean = solutionTransitions.isDefined
 
   /** @return min number of moves to solve initial board; -1 if unsolvable */
-  def moves: Int = if (solutionTransitions == null) -1
-  else solutionTransitions.size
+  def moves: Int = if (solutionTransitions.isDefined) solutionTransitions.get.size else -1
 
   /** @return sequence of boards in a shortest solutionTransitions; null if unsolvable */
   def solution: Iterable[Board] = {
@@ -49,12 +48,12 @@ class Solver(var startState: Board, val queue: UpdatablePriorityQueue[Board, Tra
     var list: List[Board] = Nil
     list +:= startState
     var previous: Board = startState
-    import scala.collection.JavaConversions._
+
     for (trans <- solutionTransitions.get) {
       val newState: Board = previous.applyTransition(trans)
-      list.add(newState)
+      list +:= newState
       previous = newState
     }
-    list
+    list.reverse
   }
 }

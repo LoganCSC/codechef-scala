@@ -34,8 +34,8 @@ object Board {
   private def makeBlocks(src: Array[Array[Int]]): Array[Byte] = {
     val length: Int = src.length
     val target: Array[Byte] = new Array[Byte](length * length)
-    for (i <- 0 to length) {
-      for (j <- 0 to length) {
+    for (i <- 0 until length) {
+      for (j <- 0 until length) {
         target(i * length + j) = src(i)(j).toByte
       }
     }
@@ -97,8 +97,8 @@ class Board {
   private def calculateHamming: Byte = {
     var expected: Byte = 0
     var hamCount: Byte = 0
-    for (i <- 0 to side) {
-      for (j <- 0 to side) {
+    for (i <- 0 until side) {
+      for (j <- 0 until side) {
             val value: Byte = blocks(i * side + j)
             expected = (expected + 1).toByte
             if (value != 0 && value != expected) hamCount = (hamCount + 1).toByte
@@ -112,8 +112,8 @@ class Board {
 
   private def calculateManhattan: Int = {
     var totalDistance: Int = 0
-    for (i <- 0 to side) {
-      for (j <- 0 to side) {
+    for (i <- 0 until side) {
+      for (j <- 0 until side) {
         val value: Int = blocks(i * side + j)
         if (value != 0) {
           val expCol: Int = (value - 1) % side
@@ -205,8 +205,8 @@ class Board {
     */
   private def getSpacePosition: Location = {
     var i: Byte = 0
-    for (i <- 0 to side) {
-      for (j <- 0 to side) {
+    for (i <- 0 until side) {
+      for (j <- 0 until side) {
         if (blocks(i * side + j) == 0) return new ByteLocation(i, j)
       }
     }
@@ -225,16 +225,16 @@ class Board {
   override def toString: String = getStringForm
 
   private def getStringForm: String = {
-    val s: StringBuilder = new StringBuilder
-    s.append(side).append("\n")
-    var i: Byte = 0
-    for (i <- 0 to side) {
-      for (j <- 0 to side) {
+    val str: StringBuilder = new StringBuilder
+    str.append(side).append("\n")
+    for (i <- 0 until side) {
+      for (j <- 0 until side) {
         val value = blocks(i * side + j)
-        s"$value%2d"
+        str.append(f"$value%2d ")
         //s.append(String.format("%2d ", new Integer(blocks(i * side + j))))
       }
+      str.append("\n")
     }
-    s.toString
+    str.toString
   }
 }

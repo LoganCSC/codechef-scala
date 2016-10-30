@@ -90,7 +90,7 @@ class BoardSuite extends FunSuite with BeforeAndAfter {
 
   test("FindTopLeftNeighbors") {
     board = new Board(SPACE_TOP_LEFT)
-    assertResult("[3\n" + " 4  2  3 \n" + " 0  5  6 \n" + " 7  1  8 \n" + ", 3\n" + " 2  0  3 \n" + " 4  5  6 \n" + " 7  1  8 \n" + "]") {
+    assertResult("List(3\n" + " 4  2  3 \n" + " 0  5  6 \n" + " 7  1  8 \n" + ", 3\n" + " 2  0  3 \n" + " 4  5  6 \n" + " 7  1  8 \n" + ")") {
       board.neighbors.toString
     }
   }
