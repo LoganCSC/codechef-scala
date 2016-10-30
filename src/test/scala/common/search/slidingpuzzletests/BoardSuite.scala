@@ -61,7 +61,7 @@ class BoardSuite extends FunSuite with BeforeAndAfter {
   test("OneStepDistance") {
     board = new Board(ALMOST_SOLVED_3)
     assertResult(1, "Unexpected hamming distance"){ board.hamming }
-    assertResult(1, "Unexpected manhattan distance") { board.manhattan }
+    assertResult(1, "Unexpected manhattan distance") { board._manhattan }
   }
 
   test("ApplyTransition") {

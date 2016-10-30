@@ -12,7 +12,7 @@ class PuzzleSearchSpace(initialState: Board) extends AbstractSearchSpace[Board, 
 
   def transition(state: Board, transition: Transition): Board = state.applyTransition(transition)
 
-  def distanceFromGoal(state: Board): Int = state.manhattan
+  def distanceFromGoal(state: Board): Int = state._manhattan
 
   override def getCost(transition: Transition): Int = 1
 }

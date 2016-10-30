@@ -1,11 +1,8 @@
 package common.search.slidingpuzzle
 
 import java.util.Arrays
-import java.util.{Collections, Comparator}
-
 import common.geometry.{ByteLocation, Location}
 
-import scala.collection.mutable.ListBuffer
 
 /**
   * Immutable.
@@ -50,22 +47,12 @@ object Board {
   }
 }
 
-class Board {
-  private var blocks: Array[Byte] = _
-  private var side: Byte = 0
-  private var hamming1: Byte = 0
-  var manhattan: Int = 0
-  private var hashCode1: Int = 0
-
-  def this(blocks: Array[Byte]) {
-    this()
-    this.blocks = blocks
-    val size: Byte = blocks.length.toByte
-    this.side = Math.sqrt(size).toByte
-    this.hamming1 = -1
-    this.manhattan = calculateManhattan
-    this.hashCode1 = -1
-  }
+class Board(blocks: Array[Byte], manhattanDist: Int = -1) {
+  private val _blocks: Array[Byte] = blocks
+  private val side: Byte = Math.sqrt(_blocks.length).toByte
+  private var _hamming: Byte = -1
+  var _manhattan: Int = if (manhattanDist == -1) calculateManhattan else manhattanDist
+  private var _hashCode: Int = -1
 
   /**
     * Construct a board from an N-by-N array of blocks
@@ -75,23 +62,13 @@ class Board {
     this(Board.makeBlocks(blocks))
   }
 
-  /** use this version of the constructor if you already know the manhattan distance */
-  def this(blocks: Array[Byte], side: Byte, manhattan: Int) {
-    this()
-    this.blocks = blocks
-    this.side = side
-    this.hamming1 = -1
-    this.hashCode1 = -1
-    this.manhattan = manhattan
-  }
-
   /** @return board dimension N */
   def dimension: Int = side
 
   /** @return number of blocks out of place */
   def hamming: Int = {
-    if (hamming1 < 0) hamming1 = calculateHamming
-    hamming1
+    if (_hamming < 0) _hamming = calculateHamming
+    _hamming
   }
 
   private def calculateHamming: Byte = {
@@ -99,7 +76,7 @@ class Board {
     var hamCount: Byte = 0
     for (i <- 0 until side) {
       for (j <- 0 until side) {
-            val value: Byte = blocks(i * side + j)
+            val value: Byte = _blocks(i * side + j)
             expected = (expected + 1).toByte
             if (value != 0 && value != expected) hamCount = (hamCount + 1).toByte
       }
@@ -108,13 +85,13 @@ class Board {
   }
 
   /** @return sum of Manhattan distances between blocks and goal */
-  //def manhattan: Int = manhattan
+  def manhattan: Int = _manhattan
 
   private def calculateManhattan: Int = {
     var totalDistance: Int = 0
     for (i <- 0 until side) {
       for (j <- 0 until side) {
-        val value: Int = blocks(i * side + j)
+        val value: Int = _blocks(i * side + j)
         if (value != 0) {
           val expCol: Int = (value - 1) % side
           val expRow: Int = (value - 1) / side
@@ -129,14 +106,14 @@ class Board {
 
   override def equals(other: Any): Boolean = {
     other match {
-      case other: Board => hamming == other.hamming && Arrays.equals(blocks, other.blocks)
+      case other: Board => hamming == other.hamming && Arrays.equals(_blocks, other._blocks)
       case _ => false
     }
   }
 
   override def hashCode: Int = {
-    if (hashCode1 < 0) hashCode1 = Arrays.hashCode(blocks)
-    hashCode1
+    if (_hashCode < 0) _hashCode = Arrays.hashCode(_blocks)
+    _hashCode
   }
 
   /** @return true if this board the goal board */
@@ -144,7 +121,7 @@ class Board {
 
   /** @return a board that is obtained by exchanging two adjacent blocks in the same row */
   def twin: Board = {
-    val newBlocks: Array[Byte] = Board.copyBlocks(this.blocks)
+    val newBlocks: Array[Byte] = Board.copyBlocks(this._blocks)
     if (newBlocks(0) != 0 && newBlocks(1) != 0) swap(0, 0, 0, 1, newBlocks)
     else swap(1, 0, 1, 1, newBlocks)
     new Board(newBlocks)
@@ -181,23 +158,20 @@ class Board {
     if (j > 0) neighbors :+= move(i, j, i, j - 1)
     if (j < side - 1) neighbors :+= move(i, j, i, j + 1)
 
-    neighbors = neighbors.sortBy(_.manhattan)
-    //Collections.sort(neighbors, new Comparator[Board]() {
-    //  def compare(o1: Board, o2: Board): Int = o1.manhattan - o2.manhattan
-    //})
+    neighbors = neighbors.sortBy(_._manhattan)
     neighbors
   }
 
   private def move(oldSpaceRow: Int, oldSpaceCol: Int, newSpaceRow: Int, newSpaceCol: Int): Board = {
-    val newBlocks: Array[Byte] = Board.copyBlocks(blocks)
-    val movingVal: Int = blocks(newSpaceRow * side + newSpaceCol)
+    val newBlocks: Array[Byte] = Board.copyBlocks(_blocks)
+    val movingVal: Int = _blocks(newSpaceRow * side + newSpaceCol)
     val goalCol: Int = (movingVal - 1) % side
     val goalRow: Int = (movingVal - 1) / side
     val oldDist: Int = Math.abs(newSpaceRow - goalRow) + Math.abs(newSpaceCol - goalCol)
     val newDist: Int = Math.abs(oldSpaceRow - goalRow) + Math.abs(oldSpaceCol - goalCol)
     val distImprovement: Int = oldDist - newDist
     swap(oldSpaceRow, oldSpaceCol, newSpaceRow, newSpaceCol, newBlocks)
-    new Board(newBlocks, side, manhattan - distImprovement)
+    new Board(newBlocks, _manhattan - distImprovement)
   }
 
   /**
@@ -207,7 +181,7 @@ class Board {
     var i: Byte = 0
     for (i <- 0 until side) {
       for (j <- 0 until side) {
-        if (blocks(i * side + j) == 0) return new ByteLocation(i, j)
+        if (_blocks(i * side + j) == 0) return new ByteLocation(i, j)
       }
     }
     throw new IllegalStateException("No space position!")
@@ -229,9 +203,8 @@ class Board {
     str.append(side).append("\n")
     for (i <- 0 until side) {
       for (j <- 0 until side) {
-        val value = blocks(i * side + j)
+        val value = _blocks(i * side + j)
         str.append(f"$value%2d ")
-        //s.append(String.format("%2d ", new Integer(blocks(i * side + j))))
       }
       str.append("\n")
     }

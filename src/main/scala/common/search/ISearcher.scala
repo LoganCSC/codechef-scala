@@ -2,10 +2,7 @@
 package common.search
 
 /**
-  * Run two AStar searches simultaneously.
-  * One searches from the start to the goal state, while
-  * the other searches from the goal to the start state.
-  * If ever one reaches a state in the visited list of the other, we are done.
+  * Interface for something that can search for a solution to a problem
   *
   * @author Barry Becker
   */

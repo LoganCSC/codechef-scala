@@ -34,7 +34,7 @@ class Node(val state: Board, var previous: Node, val numSteps: Int) extends Comp
   /** @return number of steps to get from the initial state to the current one */
   def getNumSteps: Int = numSteps
 
-  def getPriority: Int = getNumSteps + state.manhattan // * MULTIPLIER + state.hamming();
+  def getPriority: Int = getNumSteps + state._manhattan // * MULTIPLIER + state.hamming();
 
   override def toString: String = "[" + state + ", numSteps=" + numSteps + "]"
 

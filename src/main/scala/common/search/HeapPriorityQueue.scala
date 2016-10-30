@@ -20,16 +20,13 @@ object HeapPriorityQueue {
   private val DEFAULT_INITIAL_CAPACITY: Int = 256
 
   /**
-    * The maximum size of array to allocate.
-    * Some VMs reserve some header words in an array.
-    * Attempts to allocate larger arrays may result in
-    * OutOfMemoryError: Requested array size exceeds VM limit
+    * The maximum size of the array to allocate.
+    * Some VMs reserve header words in an array. Attempts to allocate larger arrays may result in OutOfMemoryError.
     */
   private val MAX_ARRAY_SIZE: Int = Integer.MAX_VALUE - 8
 
   private def hugeCapacity(minCapacity: Int): Int = {
-    if (minCapacity < 0) // overflow
-      throw new OutOfMemoryError
+    if (minCapacity < 0) throw new OutOfMemoryError
     if (minCapacity > MAX_ARRAY_SIZE) Integer.MAX_VALUE
     else MAX_ARRAY_SIZE
   }
@@ -40,10 +37,11 @@ object HeapPriorityQueue {
   * that orders its elements according to the specified comparator.
   * @param initialCapacity the initial capacity for this priority queue
   * @param comparator The comparator, or null if priority queue uses elements' natural ordering.
-  * S - state
-  * T - Transition
+  * S represents a state in the global search space.
+  * T represents a transition from one state to the next.
   */
-class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparator[_ >: Node[S, T]])
+class HeapPriorityQueue[S, T](val initialCapacity: Int = HeapPriorityQueue.DEFAULT_INITIAL_CAPACITY,
+                              val comparator: Comparator[_ >: Node[S, T]] = null)
   extends UpdatablePriorityQueue[S, T] {
 
   /**
@@ -54,34 +52,13 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     * heap and each descendant d of n, n <= d.  The element with the
     * lowest value is in queue[0], assuming the queue is nonempty.
     */
-  private var queue: Array[AnyRef] = new Array[AnyRef](initialCapacity)
+  private var queue: Array[Node[S, T]] = new Array[Node[S, T]](initialCapacity)
 
   /** allows for quick lookup of a nodes position in the heap. Required for updating priority of nodes */
-  private var indexMap: mutable.Map[Node[S, T], Integer] = mutable.Map[Node[S, T], Integer]()
+  private val indexMap: mutable.Map[Node[S, T], Integer] = mutable.Map[Node[S, T], Integer]()
 
-
-  /**
-    * The number of elements in the priority queue.
-    */
-  private var size1: Int = 0
-
-  /**
-    * Creates a PriorityQueue with the default initial
-    * capacity (11) that orders its elements according to their Comparable natural ordering.
-    */
-  def this() {
-    this(HeapPriorityQueue.DEFAULT_INITIAL_CAPACITY, null)
-  }
-
-  /**
-    * Creates a PriorityQueue with the specified initial
-    * capacity that orders its elements according to their Comparable natural ordering.
-    *
-    * @param initialCapacity the initial capacity for this priority queue
-    */
-  def this(initialCapacity: Int) {
-    this(initialCapacity, null)
-  }
+  /** The number of elements in the priority queue. */
+  private var _size: Int = 0
 
   /**
     * Increases the capacity of the array.
@@ -104,14 +81,16 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     minNode
   }
 
-  def addOrUpdate(node: Node[S, T]): Boolean = if (indexMap.contains(node)) {
-    val index: Int = indexMap(node)
-    this.siftUp(index, node)
-    true
-  }
-  else {
-    add(node)
-    false
+  def addOrUpdate(node: Node[S, T]): Boolean = {
+    if (indexMap.contains(node)) {
+      val index: Int = indexMap(node)
+      this.siftUp(index, node)
+      true
+    }
+    else {
+      add(node)
+      false
+    }
   }
 
   /**
@@ -120,46 +99,33 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     * Then shift it up.
     */
   private def removeAt(i: Int) {
-    assert(i >= 0 && i < this.size1)
-    val s: Int = {
-      size1 -= 1; size1
-    }
-    val removed: Node[S, T] = queue(i).asInstanceOf[Node[S, T]]
+    assert(i >= 0 && i < size)
+    _size -= 1
+    val s: Int = _size
+    val removed: Node[S, T] = queue(i)
     queue(i) = queue(s)
     queue(s) = null
-    if (s != i) {
-      // removing other than last
-      val node: Node[S, T] = queue(i).asInstanceOf[Node[S, T]]
+    if (s != i) {// removing other than last
+      val node: Node[S, T] = queue(i)
       siftDown(i, node)
     }
     indexMap.remove(removed)
   }
 
-  /**
-    * Inserts the specified element into this priority queue.
-    *
-    * @return { @code true} (as specified by { @link Collection#add})
-    * @throws ClassCastException   if the specified element cannot be
-    *                              compared with elements currently in this priority queue
-    *                              according to the priority queue's ordering
-    * @throws NullPointerException if the specified element is null
-    */
   def add(e: Node[S, T]): Boolean = offer(e)
 
   /**
     * Inserts the specified element into this priority queue.
-    *
     * @return { @code true} if the specified node is added
-    * @throws ClassCastException   if the specified element cannot be
-    *                              compared with elements currently in this priority queue
-    *                              according to the priority queue's ordering
+    * @throws ClassCastException  if the specified element cannot be compared with elements currently
+    *    in this priority queue according to the priority queue's ordering
     * @throws NullPointerException if the specified element is null
     */
   def offer(node: Node[S, T]): Boolean = {
     if (node == null) throw new NullPointerException
-    val i: Int = size1
+    val i: Int = _size
     if (i >= queue.length) grow(i + 1)
-    size1 = i + 1
+    _size = i + 1
     queue(i) = node
     indexMap.put(node, i)
     if (i != 0) siftUp(i, node)
@@ -167,30 +133,20 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
   }
 
   def peek: Node[S, T] = {
-    if (size1 == 0) return null
-    queue(0).asInstanceOf[Node[S, T]]
+    if (size == 0) return null
+    queue(0)
   }
 
-  def size: Int = size1
+  def size: Int = _size
+  def isEmpty: Boolean = _size == 0
 
-  def isEmpty: Boolean = size1 == 0
-
-  /**
-    * Removes all of the elements from this priority queue.
-    * The queue will be empty after this call returns.
-    */
+  /** Removes all of the elements from this priority queue. */
   def clear() {
-    var i: Int = 0
-    while (i < size1) {
-      {
-        indexMap.remove(queue(i).asInstanceOf[Node[S, T]])
-        queue(i) = null
-      }
-      {
-        i += 1; i - 1
-      }
+    for (i <- 0 until size) {
+      indexMap.remove(queue(i))
+      queue(i) = null
     }
-    size1 = 0
+    _size = 0
   }
 
   /**
@@ -215,10 +171,10 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     var done = false
     while (k > 0 && !done) {
       val parent: Int = (k - 1) >>> 1
-      val element: AnyRef = queue(parent)
-      if (key.compareTo(element.asInstanceOf[Node[S, T]]) < 0)  {
+      val element: Node[S, T] = queue(parent)
+      if (key.compareTo(element) < 0)  {
         queue(k) = element
-        indexMap.put(element.asInstanceOf[Node[S, T]], k)
+        indexMap.put(element, k)
         k = parent
       } else done = true
     }
@@ -231,13 +187,12 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     var done = false
     while (k > 0 && !done) {
       val parent: Int = (k - 1) >>> 1
-      val e: AnyRef = queue(parent)
-      if (comparator.compare(x, e.asInstanceOf[Node[S, T]]) < 0) {
+      val e: Node[S, T] = queue(parent)
+      if (comparator.compare(x, e) < 0) {
         queue(k) = e
-        indexMap.put(e.asInstanceOf[Node[S, T]], k)
+        indexMap.put(e, k)
         k = parent
       } else done = true
-
     }
     queue(k) = x
     indexMap.put(x, k)
@@ -259,17 +214,17 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
   private def siftDownComparable(index: Int, key: Node[S, T]) {
     var k = index
     var done = false
-    val half: Int = size1 >>> 1 // loop while a non-leaf
+    val half: Int = _size >>> 1 // loop while a non-leaf
     while (k < half && !done) {
       var child: Int = (k << 1) + 1 // assume left child is least
-      var c: AnyRef = queue(child)
+      var c: Node[S, T] = queue(child)
       val right: Int = child + 1
-      if (right < size1 && c.asInstanceOf[Comparable[_ >: Node[S, T]]].compareTo(queue(right).asInstanceOf[Node[S, T]]) > 0)
+      if (right < _size && c.compareTo(queue(right)) > 0)
         child = right
         c = queue(child)
-      if (key.compareTo(c.asInstanceOf[Node[S, T]]) > 0) {
+      if (key.compareTo(c) > 0) {
         queue(k) = c
-        indexMap.put(c.asInstanceOf[Node[S, T]], k)
+        indexMap.put(c, k)
         k = child
       } else done = true
     }
@@ -280,17 +235,17 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
   private def siftDownUsingComparator(index: Int, x: Node[S, T]) {
     var k = index
     var done = false
-    val half: Int = size1 >>> 1
+    val half: Int = _size >>> 1
     while (k < half && !done) {
       var child: Int = (k << 1) + 1
-      var c: AnyRef = queue(child)
+      var c: Node[S, T] = queue(child)
       val right: Int = child + 1
-      if (right < size1 && comparator.compare(c.asInstanceOf[Node[S, T]], queue(right).asInstanceOf[Node[S, T]]) > 0)
+      if (right < _size && comparator.compare(c, queue(right)) > 0)
         child = right
         c = queue(child)
-      if (comparator.compare(x, c.asInstanceOf[Node[S, T]]) > 0) {
+      if (comparator.compare(x, c) > 0) {
         queue(k) = c
-        indexMap.put(c.asInstanceOf[Node[S, T]], k)
+        indexMap.put(c, k)
         k = child
       } else done = true
     }

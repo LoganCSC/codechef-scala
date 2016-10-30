@@ -12,11 +12,10 @@ import scala.collection.mutable
   * @author Barry Becker
   */
 trait SearchSpace[S, T] extends Refreshable[S, T] {
+
   def initialState: S
 
-  /**
-    * @return true if the state is the goal state.
-    */
+  /** @return true if the state is the goal state. */
   def isGoal(state: S): Boolean
 
   /**
@@ -27,9 +26,7 @@ trait SearchSpace[S, T] extends Refreshable[S, T] {
     */
   def legalTransitions(state: S): Seq[T]
 
-  /**
-    * @return the state (immutable) that you get after applying the specified transition.
-    */
+  /** @return the state (immutable) that you get after applying the specified transition. */
   def transition(state: S, transition: T): S
 
   /**
@@ -46,9 +43,6 @@ trait SearchSpace[S, T] extends Refreshable[S, T] {
     */
   def distanceFromGoal(state: S): Int
 
-  /**
-    * @return the cost of making a single transition.
-    *         Usually a constant like 1, but for some scenarios it matters.
-    */
+  /** @return the cost of making a single transition. Usually a constant like 1, but for some scenarios it matters. */
   def getCost(transition: T): Int
 }
