@@ -5,7 +5,7 @@ import org.scalatest.{BeforeAndAfter, FunSuite}
 /**
   * @author Barry Becker
   */
-class AStarSearchTest extends FunSuite with BeforeAndAfter {
+class AStarSearchSuite extends FunSuite with BeforeAndAfter {
 
   private var space: StubSearchSpace = _
 

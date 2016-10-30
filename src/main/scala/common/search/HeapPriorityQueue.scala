@@ -40,15 +40,11 @@ object HeapPriorityQueue {
   * that orders its elements according to the specified comparator.
   * @param initialCapacity the initial capacity for this priority queue
   * @param comparator The comparator, or null if priority queue uses elements' natural ordering.
+  * S - state
+  * T - Transition
   */
 class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparator[_ >: Node[S, T]])
   extends UpdatablePriorityQueue[S, T] {
-
-  // Note: This restriction of at least one is not actually needed,
-  // but continues for 1.5 compatibility
-  if (initialCapacity < 1) throw new IllegalArgumentException
-  this.queue = new Array[AnyRef](initialCapacity)
-  this.indexMap = mutable.Map[Node[S, T], Integer]() //HeapPriorityQueue.DEFAULT_INITIAL_CAPACITY)
 
   /**
     * Priority queue represented as a balanced binary heap: the two
@@ -58,10 +54,11 @@ class HeapPriorityQueue[S, T](val initialCapacity: Int, val comparator: Comparat
     * heap and each descendant d of n, n <= d.  The element with the
     * lowest value is in queue[0], assuming the queue is nonempty.
     */
-  private var queue: Array[AnyRef] = _
+  private var queue: Array[AnyRef] = new Array[AnyRef](initialCapacity)
 
   /** allows for quick lookup of a nodes position in the heap. Required for updating priority of nodes */
-  private var indexMap: mutable.Map[Node[S, T], Integer] = _
+  private var indexMap: mutable.Map[Node[S, T], Integer] = mutable.Map[Node[S, T], Integer]()
+
 
   /**
     * The number of elements in the priority queue.

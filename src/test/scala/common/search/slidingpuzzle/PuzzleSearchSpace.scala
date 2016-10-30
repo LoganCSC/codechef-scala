@@ -5,7 +5,7 @@ import common.search.AbstractSearchSpace
 /**
   * @author Barry Becker
   */
-class PuzzleSearchSpace(override val initialState: Board) extends AbstractSearchSpace[Board, Transition](initialState) {
+class PuzzleSearchSpace(initialState: Board) extends AbstractSearchSpace[Board, Transition](initialState) {
   def isGoal(state: Board): Boolean = state.hamming == 0
 
   def legalTransitions(state: Board): List[Transition] = state.getNeighborTransitions
