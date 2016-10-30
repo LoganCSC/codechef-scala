@@ -10,8 +10,8 @@ import org.scalatest.FunSuite
   */
 class SolutionTest extends FunSuite {
 
-  test("test simple default case") {
 
+  test("test simple default case") {
     val matrix = Array(
       ".X.".toArray,
       ".X.".toArray,
@@ -27,7 +27,7 @@ class SolutionTest extends FunSuite {
 
     val matrix = Array(
       "....X...XX".toArray,
-      "..X...X..".toArray,
+      "..X...X...".toArray,
       ".X..X.XX..".toArray,
       "X...X...X.".toArray,
       "...X...X..".toArray,
@@ -46,8 +46,8 @@ class SolutionTest extends FunSuite {
   test("test case for wall with opening") {
 
     val matrix = Array(
-      "...X...XX".toArray,
-      "..XX..X..".toArray,
+      "....X...XX".toArray,
+      "..XX..X...".toArray,
       ".X.XX.XX..".toArray,
       ".X..X...X.".toArray,
       ".......X..".toArray,
@@ -66,8 +66,8 @@ class SolutionTest extends FunSuite {
   test("test case when no solution") {
 
     val matrix = Array(
-      "...X...XX".toArray,
-      "..XX..X..".toArray,
+      "...X....XX".toArray,
+      "..XX...X..".toArray,
       ".X.XX.XX..".toArray,
       ".X..X...X.".toArray,
       ".......X..".toArray,

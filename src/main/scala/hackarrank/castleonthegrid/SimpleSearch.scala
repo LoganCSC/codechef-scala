@@ -1,22 +1,25 @@
 package hackarrank.castleonthegrid
 
-import common.geometry.{IntLocation, Location}
+import common.geometry.Location
 
 import scala.collection.mutable
 
 /**
-  * @param searchSpace the global search space containing initial and goal states.
   * @author Barry Becker
   */
-class SimpleSearch(val searchSpace: CastleSearchSpace) {
+class SimpleSearch(val startingState: Board) {
 
   /** States that have been visited, but they may be replaced if we can reach them by a better path */
   private val bestCost = new mutable.HashMap[Location, Int]
 
-  /** estCost is the cort to get here plus estimated future cost */
-  private class Node(val b: Board, val costToHere: Int, val estCost: Int, val prev: Node = null)
+  /** estCost is the cost to get here plus estimated future cost */
+  private class Node(val b: Board, val costToHere: Int, val estCost: Int, val prev: Node = null) {
+    override def toString: String = {
+        "costToHere=" + costToHere +" estCost=" + estCost
+    }
+  }
 
-  private val openQueue = new mutable.PriorityQueue[Node]()(Ordering.by(_.estCost))
+  private val openQueue = new mutable.PriorityQueue[Node]()(Ordering.by(-_.estCost))
 
 
   /** @return a sequence of transitions leading from the initial state to the goal state.*/
@@ -39,7 +42,6 @@ class SimpleSearch(val searchSpace: CastleSearchSpace) {
   }
 
   private def initialize() {
-    val startingState: Board = searchSpace.initialState
     val startNode = new Node(startingState, 0, startingState.estimatedStepsToGoal)
     openQueue.enqueue(startNode)
     bestCost.put(startingState.currentPosition, 0)
@@ -51,8 +53,10 @@ class SimpleSearch(val searchSpace: CastleSearchSpace) {
     */
   private def search: Option[Node] = {
     while (openQueue.nonEmpty) {
+      println("q = " + openQueue.mkString(", "))
       val currentNode: Option[Node] = processNext(openQueue.dequeue())
-      if (currentNode.isDefined) return currentNode
+      if (currentNode.isDefined)
+        return currentNode
     }
     None // failure
   }
@@ -61,19 +65,19 @@ class SimpleSearch(val searchSpace: CastleSearchSpace) {
   /** process the next node on the priority queue */
   private def processNext(currentNode: Node): Option[Node] = {
     val currentState: Board = currentNode.b
-    if (searchSpace.isGoal(currentState)) {
+    if (currentState.isAtGoal) {
       Some(currentNode) // success
     }
     else {
-      val transitions = searchSpace.legalTransitions(currentState)
+      val transitions = currentState.getNeighborTransitions
       assert(transitions != null, "Could not find any transitions from " + currentState)
 
       for (transition <- transitions) {
-        val nbr = searchSpace.transition(currentState, transition)
+        val nbr = currentState.applyTransition(transition)
         val pathCost: Int = currentNode.costToHere + 1
         if (!bestCost.contains(nbr.currentPosition) || pathCost < bestCost(nbr.currentPosition)) {
           bestCost.put(nbr.currentPosition, pathCost)
-          val estFutureCost: Int = pathCost + searchSpace.distanceFromGoal(nbr)
+          val estFutureCost: Int = pathCost + nbr.estimatedStepsToGoal
           val child: Node = new Node(nbr, pathCost, estFutureCost, currentNode)
           openQueue.enqueue(child)
         }

@@ -11,7 +11,7 @@ class SimpleCastleSolver(var startState: Board) {
 
   /** this is faster and simpler if we know its solvable */
   private def solveAssumingSolvable(initial: Board) = {
-    val searcher: SimpleSearch = new SimpleSearch(new CastleSearchSpace(initial))
+    val searcher: SimpleSearch = new SimpleSearch(initial)
     solutionTransitions = searcher.solve
   }
 
