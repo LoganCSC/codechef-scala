@@ -1,8 +1,6 @@
 package hackarrank.castleonthegrid
 
 import common.Location
-
-import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 /**
@@ -19,10 +17,7 @@ object Solution {
 
   private def readBoard(): Board = {
     val dim = StdIn.readLine().toInt
-    val matrix = new ListBuffer[Array[Char]]()
-    (1 to dim).foreach(x =>
-      matrix.append(StdIn.readLine().toArray)
-    )
+    val matrix = for (i <-1 to dim) yield StdIn.readLine().toArray
     val Array(startRow, startCol, goalRow, goalCol) = StdIn.readLine().split(" ").map(_.toInt)
     val start = new Location(startRow, startCol)
     val goal = new Location(goalRow, goalCol)

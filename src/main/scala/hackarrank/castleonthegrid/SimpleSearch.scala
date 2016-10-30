@@ -1,13 +1,10 @@
 package hackarrank.castleonthegrid
 
-
 import common.Location
 
 import scala.collection.mutable
 
-/**
-  * @author Barry Becker
-  */
+/** @author Barry Becker */
 class SimpleSearch(val startingState: Board) {
 
   /** States that have been visited, but they may be replaced if we can reach them by a better path */

@@ -2,11 +2,7 @@ package hackarrank.castleonthegrid
 
 import common.Location
 
-
-/**
-  * Maintains the current position on the immutable grid and calculates possible next moves.
-  * Immutable
-  */
+/** Maintains the current position on the immutable grid and calculates possible next moves. Immutable */
 class Board(val grid: Grid, val currentPosition: Location) {
 
   def isAtGoal = currentPosition == grid.goal
