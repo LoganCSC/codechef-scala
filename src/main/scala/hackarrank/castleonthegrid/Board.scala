@@ -3,9 +3,10 @@ package hackarrank.castleonthegrid
 import common.geometry.{IntLocation, Location}
 
 /**
-  * Maintains the current position on the grid
+  * Maintains the current position on the immutable grid and calculates possible next moves.
+  * Immutable
   */
-class Board(grid: Grid, val currentPosition: Location) {
+class Board(val grid: Grid, val currentPosition: Location) {
 
   def isAtGoal = currentPosition == grid.goal
 
@@ -25,24 +26,33 @@ class Board(grid: Grid, val currentPosition: Location) {
   def getNeighborTransitions: List[Transition] = {
     var neighbors: List[Transition] = Nil
 
-    val i: Int = currentPosition.getRow
-    val j: Int = currentPosition.getCol
-    // march east
-    while (i + 1 < grid.size && grid.isOpen(i + 1, j) )
-      neighbors :+= new Transition(currentPosition, new IntLocation(i + 1, j))
+    var i: Int = currentPosition.getRow
+    var j: Int = currentPosition.getCol
 
-    // march west
-    while (i > 0 && grid.isOpen(i - 1, j) )
-      neighbors :+= new Transition(currentPosition, new IntLocation(i - 1, j))
+    while (i + 1 < grid.size && grid.isOpen(i + 1, j)) { // march east
+      neighbors :+= new Transition(new IntLocation(i + 1, j))
+      i += 1
+    }
 
-    // march north
-    while (j + 1 < grid.size && grid.isOpen(i, j + 1) )
-      neighbors :+= new Transition(currentPosition, new IntLocation(i, j + 1))
+    i = currentPosition.getRow
+    while (i > 0 && grid.isOpen(i - 1, j)) { // march west
+      neighbors :+= new Transition(new IntLocation(i - 1, j))
+      i -= 1
+    }
 
-    // march south
-    while (j > 0 && grid.isOpen(i, j - 1) )
-      neighbors :+= new Transition(currentPosition, new IntLocation(i, j - 1))
+    i = currentPosition.getRow
+    while (j + 1 < grid.size && grid.isOpen(i, j + 1) ) { // march south
+      neighbors :+= new Transition(new IntLocation(i, j + 1))
+      j += 1
+    }
 
+    j = currentPosition.getCol
+    while (j > 0 && grid.isOpen(i, j - 1) ) { // march north
+      neighbors :+= new Transition(new IntLocation(i, j - 1))
+      j -= 1
+    }
+
+    //println("from " + currentPosition + " nbrs = "+ neighbors.mkString(", "))
     neighbors
   }
 
@@ -50,4 +60,14 @@ class Board(grid: Grid, val currentPosition: Location) {
     new Board(grid, trans.newPosition)
   }
 
+  override def equals(other: Any): Boolean = {
+    other match {
+      case other: Board => currentPosition == other.currentPosition && grid == other.grid
+      case _ => false
+    }
+  }
+
+  override def hashCode: Int = {
+    currentPosition.hashCode + grid.hashCode()
+  }
 }

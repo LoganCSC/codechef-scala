@@ -22,10 +22,10 @@ object Solution {
 
     val board = new Board(new Grid(start, goal, matrix.toArray), start)
 
+    val solver = new CastleSolver(board)
+
     //println(matrix.map(_.mkString("")).mkString("\n"))
-
-
-    //println(grid.findNumStepsToGoal(startRow, startCol, goalRow, goalCol))
+    println(solver.moves)
   }
 
 }

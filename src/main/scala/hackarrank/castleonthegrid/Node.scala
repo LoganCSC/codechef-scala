@@ -14,8 +14,7 @@ class Node(val state: Board, var previous: Node = null, val pathCost: Int = 0) e
   /** @return state in the global search space */
   def getState: Board = state
 
-  def getPreviousBoard: Board = if (previous == null) null
-  else previous.getState
+  def getPreviousBoard: Board = if (previous == null) null else previous.getState
 
   /** @return number of steps to get from the initial state to the current one */
   def getPathCost: Int = pathCost

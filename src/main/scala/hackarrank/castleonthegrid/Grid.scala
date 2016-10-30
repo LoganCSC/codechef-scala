@@ -17,19 +17,4 @@ class Grid(val start: IntLocation, val goal: IntLocation, elements: Array[Array[
     3
   }
 
-
-  /*
-  override def equals(other: Any): Boolean = {
-    other match {
-      case other: Grid => currentPosition == other.currentPosition && Arrays.equals(elements, other.elements)
-      case _ => false
-    }
-  }
-
-
-  override def hashCode: Int = {
-    if (_hashCode < 0) _hashCode = Arrays.hashCode(_blocks)
-    _hashCode
-  }*/
-
 }
