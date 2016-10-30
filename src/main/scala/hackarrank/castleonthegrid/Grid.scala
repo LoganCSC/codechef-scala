@@ -12,9 +12,4 @@ class Grid(val start: IntLocation, val goal: IntLocation, elements: Array[Array[
   val size =  elements.length
 
   def isOpen(row: Int, col: Int) = elements(row)(col) != 'X'
-
-  def findNumStepsToGoal(startRow: Int, startCol: Int, goalRow: Int, goalCol: Int): Int = {
-    3
-  }
-
 }

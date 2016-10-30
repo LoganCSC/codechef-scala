@@ -29,13 +29,13 @@ class Board(val grid: Grid, val currentPosition: Location) {
     var i: Int = currentPosition.getRow
     var j: Int = currentPosition.getCol
 
-    while (i + 1 < grid.size && grid.isOpen(i + 1, j)) { // march east
+    while (i + 1 < grid.size && grid.isOpen(i + 1, j)) {   // march east
       neighbors :+= new Transition(new IntLocation(i + 1, j))
       i += 1
     }
 
     i = currentPosition.getRow
-    while (i > 0 && grid.isOpen(i - 1, j)) { // march west
+    while (i > 0 && grid.isOpen(i - 1, j)) {             // march west
       neighbors :+= new Transition(new IntLocation(i - 1, j))
       i -= 1
     }
@@ -47,7 +47,7 @@ class Board(val grid: Grid, val currentPosition: Location) {
     }
 
     j = currentPosition.getCol
-    while (j > 0 && grid.isOpen(i, j - 1) ) { // march north
+    while (j > 0 && grid.isOpen(i, j - 1) ) {            // march north
       neighbors :+= new Transition(new IntLocation(i, j - 1))
       j -= 1
     }

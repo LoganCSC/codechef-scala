@@ -11,6 +11,13 @@ import scala.io.StdIn
 object Solution {
 
   def main(args: Array[String]) {
+
+    val board = readBoard()
+    val solver = new CastleSolver(board)
+    println(solver.moves)
+  }
+
+  private def readBoard(): Board = {
     val dim = StdIn.readLine().toInt
     val matrix = new ListBuffer[Array[Char]]()
     (1 to dim).foreach(x =>
@@ -20,12 +27,7 @@ object Solution {
     val start = new IntLocation(startRow, startCol)
     val goal = new IntLocation(goalRow, goalCol)
 
-    val board = new Board(new Grid(start, goal, matrix.toArray), start)
-
-    val solver = new CastleSolver(board)
-
-    //println(matrix.map(_.mkString("")).mkString("\n"))
-    println(solver.moves)
+    new Board(new Grid(start, goal, matrix.toArray), start)
   }
 
 }
