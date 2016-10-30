@@ -17,6 +17,4 @@ class Location(val row: Int, val col: Int) {
 
   /** If override equals, should also override hashCode */
   override def hashCode: Int = 255 * row + col
-
-
 }

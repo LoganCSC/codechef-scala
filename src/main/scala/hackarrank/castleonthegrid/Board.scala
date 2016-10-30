@@ -53,7 +53,7 @@ class Board(val grid: Grid, val currentPosition: Location) {
       j -= 1
     }
 
-    println("from " + currentPosition + " nbrs = "+ neighbors.mkString(", "))
+    //println("from " + currentPosition + " nbrs = "+ neighbors.mkString(", "))
     neighbors
   }
 
