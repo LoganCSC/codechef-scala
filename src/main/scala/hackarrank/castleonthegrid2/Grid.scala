@@ -2,7 +2,6 @@ package hackarrank.castleonthegrid2
 
 import common.Location
 import Grid._
-
 import scala.collection.mutable
 
 object Grid {
@@ -34,11 +33,8 @@ class Grid(val start: Location, val goal: Location, elements: Array[Array[Char]]
   def findMinimumMoves: Int = {
     while (queue.nonEmpty) {
       val nextNode = queue.dequeue()
-      if (nextNode.location == goal)
-        return nextNode.step
-      else {
-        floodFrom(nextNode)
-      }
+      if (nextNode.location == goal) return nextNode.step
+      else floodFrom(nextNode)
     }
     -1
   }
@@ -47,7 +43,7 @@ class Grid(val start: Location, val goal: Location, elements: Array[Array[Char]]
     val newStep = node.step + 1
     DIRECTIONS.foreach(dir => {
       var currentPos = node.location
-      while (isDirectionOpen(currentPos, dir)) {
+      while (isDirectionOpen(currentPos, dir, newStep)) {
         currentPos = new Location(currentPos.row + dir.row, currentPos.col + dir.col)
         setValue(currentPos, newStep)
         queue.enqueue(new Node(currentPos, newStep))
@@ -55,16 +51,16 @@ class Grid(val start: Location, val goal: Location, elements: Array[Array[Char]]
     })
   }
 
-  def isDirectionOpen(currentLoc: Location, dir: Location): Boolean = {
-    val r = currentLoc.row + dir.row
-    val c = currentLoc.col + dir.col
-    if (inBounds(r, c)) {
-      val value = data(r)(c)
-      value == EMPTY
+  def isDirectionOpen(currentLoc: Location, dir: Location, newStep: Int): Boolean = {
+    val newLoc = Location(currentLoc.row + dir.row, currentLoc.col + dir.col)
+    if (inBounds(newLoc)) {
+      val value = getValue(newLoc)
+      value == EMPTY || value >= newStep
     } else false
   }
 
-  def inBounds(r: Int, c: Int) = r >= 0 && r < size && c >= 0 && c < size
+  def inBounds(loc: Location) = loc.row >= 0 && loc.row < size && loc.col >= 0 && loc.col < size
   def getValue(loc: Location) = data(loc.row)(loc.col)
   def setValue(loc: Location, value: Int) = { data(loc.row)(loc.col) = value }
+  override def toString = { data.map(_.mkString(",")).mkString("\n") }
 }

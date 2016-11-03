@@ -7,8 +7,6 @@ object Location {
 class Location(val row: Int, val col: Int) {
   override def toString: String = "(" + row + ", " + col + ")"
 
-
-
   /**
     * Checks to see if the given location has the same coordinates as this one.
     * @param location The location whose coordinates are to be compared.
@@ -22,5 +20,5 @@ class Location(val row: Int, val col: Int) {
   }
 
   /** If override equals, should also override hashCode */
-  override def hashCode: Int = 255 * row + col
+  override def hashCode: Int = 1023 * row + col
 }
