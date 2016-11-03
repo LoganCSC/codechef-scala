@@ -3,11 +3,11 @@ package hackarrank.castleonthegrid
 import common.Location
 
 
-/** Uses a naive brute force approach */
+/** Use simplistic best first search approach */
 class SimpleCastleSolver(var startState: Board) {
 
   solveAssumingSolvable(startState)
-  private var solutionTransitions: Option[Seq[Location]] = _
+  var solutionTransitions: Option[Seq[Location]] = _
 
   /** this is faster and simpler if we know its solvable */
   private def solveAssumingSolvable(initial: Board) = {
@@ -20,6 +20,4 @@ class SimpleCastleSolver(var startState: Board) {
 
   /** @return min number of moves to solve initial board; -1 if unsolvable */
   def moves: Int = if (solutionTransitions.isDefined) solutionTransitions.get.size else -1
-
-  def transitions: Seq[Location] = solutionTransitions.get
 }

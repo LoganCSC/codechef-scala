@@ -1,7 +1,13 @@
 package common
 
+object Location {
+  def apply(row: Int, col: Int) = new Location(row, col)
+}
+
 class Location(val row: Int, val col: Int) {
   override def toString: String = "(" + row + ", " + col + ")"
+
+
 
   /**
     * Checks to see if the given location has the same coordinates as this one.
