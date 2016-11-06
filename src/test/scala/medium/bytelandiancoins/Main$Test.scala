@@ -1,6 +1,5 @@
 package medium.bytelandiancoins
 
-import medium.bytelandiancoins.Main
 import org.scalatest.FunSuite
 
 class Main$Test extends FunSuite {

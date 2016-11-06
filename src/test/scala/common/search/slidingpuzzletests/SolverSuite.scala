@@ -88,7 +88,7 @@ abstract class SolverSuite extends FunSuite with BeforeAndAfter {
       new Case("puzzle3x3-unsolvable1.txt", -1, false),
       new Case("puzzle3x3-unsolvable2.txt", -1, false)
       )
-    runCases(testCases, 2.0)
+    runCases(testCases, 3.0)
   }
 
   test("run2by2Cases") {

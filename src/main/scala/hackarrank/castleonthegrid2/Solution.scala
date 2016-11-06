@@ -5,7 +5,7 @@ import common.Location
 import scala.io.StdIn
 
 /**
-  * Simpler solution than AStar solution.
+ * Simpler solution than AStar solution.
  * https://www.hackerrank.com/contests/compsci-club5/challenges/castle-on-the-grid
  */
 object Solution {
