@@ -7,9 +7,10 @@ import scala.collection.mutable.ArrayBuffer
   */
 class ArrayData(data: Array[Int]) {
   val cdata = coalesce(data)
+  println("coalesced = " + cdata.mkString(", "))
   val maxValue = data.max
 
-  def largestContiguousSubArray(): Int = {
+  def largestContiguousSubArraySum(): Int = {
 
     var start = if (cdata(0) <= 0) 1 else 0
     var sum = 0
@@ -17,16 +18,29 @@ class ArrayData(data: Array[Int]) {
 
     while (start < cdata.length) {
       sum += cdata(start)
-      val sumNext = sumNext2(start + 1)
-      if (sumNext > 0) sum += sumNext
       if (sum > maxSubSum) maxSubSum = sum
-      start += 3
+
+      val sumNext2 = sumNextTwo(start + 1)
+
+      if (start + 2 < cdata.length && cdata(start + 2) > (sumNext2 + sum)) {
+        sum = 0
+        start += 2
+      } else {
+
+        if (sumNext2 > 0) {
+          sum += sumNext2
+          if (sum > maxSubSum) maxSubSum = sum
+        } else {
+          sum = 0
+        }
+        start += 3
+      }
     }
     if (maxSubSum == 0) maxValue else maxSubSum
   }
 
   /** @return the sum of the next two - which are always a negative followed by a positive */
-  def sumNext2(idx: Int) = {
+  def sumNextTwo(idx: Int) = {
     if (idx + 1 < cdata.length)
       cdata(idx) + cdata(idx + 1)
     else if (idx < cdata.length) cdata(idx) else 0
@@ -60,7 +74,7 @@ class ArrayData(data: Array[Int]) {
     i
   }
 
-  def largestSubArray(): Int = {
+  def largestSubArraySum(): Int = {
     val lsum = cdata.filter(_ > 0).sum
     if (lsum == 0) maxValue else lsum
   }
