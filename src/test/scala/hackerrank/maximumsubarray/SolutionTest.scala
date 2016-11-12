@@ -8,6 +8,7 @@ import org.scalatest.FunSuite
   */
 class SolutionTest extends FunSuite {
 
+
   test("test when all positive1") {
     val region = new ArrayData(Array(1, 2, 3, 4, 5))
     assert(region.largestContiguousSubArray() == 15)
@@ -37,6 +38,5 @@ class SolutionTest extends FunSuite {
     assert(region.largestContiguousSubArray() == 26)
     assert(region.largestSubArray() == 43)
   }
-
 
 }
