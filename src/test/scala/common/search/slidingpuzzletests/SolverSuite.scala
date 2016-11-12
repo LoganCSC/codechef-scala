@@ -3,6 +3,7 @@ package common.search.slidingpuzzletests
 import common.Watch
 import common.search.slidingpuzzle.{Board, BoardReader, Solver, Transition}
 import org.scalatest.{BeforeAndAfter, FunSuite}
+
 /**
   * @author Barry Becker
   */
