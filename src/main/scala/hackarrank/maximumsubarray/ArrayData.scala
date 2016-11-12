@@ -7,43 +7,45 @@ import scala.collection.mutable.ArrayBuffer
   */
 class ArrayData(data: Array[Int]) {
   val cdata = coalesce(data)
-  println("coalesced = " + cdata.mkString(", "))
+  //println("coalesced = " + cdata.mkString(", "))
   val maxValue = data.max
 
   def largestContiguousSubArraySum(): Int = {
-
-    var start = if (cdata(0) <= 0) 1 else 0
-    var sum = 0
+    var start = 1
     var maxSubSum = 0
+    if (start < cdata.length) {
 
-    while (start < cdata.length) {
-      sum += cdata(start)
-      if (sum > maxSubSum) maxSubSum = sum
-
-      val sumNext2 = sumNextTwo(start + 1)
-
-      if (start + 2 < cdata.length && cdata(start + 2) > (sumNext2 + sum)) {
-        sum = 0
+      while (start < cdata.length) {
+        val sum = findLargestSumFromIdx(start)
+        if (sum > maxSubSum) maxSubSum = sum
         start += 2
-      } else {
-
-        if (sumNext2 > 0) {
-          sum += sumNext2
-          if (sum > maxSubSum) maxSubSum = sum
-        } else {
-          sum = 0
-        }
-        start += 3
       }
     }
+
     if (maxSubSum == 0) maxValue else maxSubSum
+  }
+
+  def findLargestSumFromIdx(start: Int): Int = {
+    var idx = start
+    var sum = cdata(idx)
+    var maxSum = sum
+
+    while (idx < cdata.length) {
+      val sumNext2 = sumNextTwo(idx)
+      sum += sumNext2
+      if (sum > maxSum) {
+        maxSum = sum
+      }
+      idx += 2
+    }
+    maxSum
   }
 
   /** @return the sum of the next two - which are always a negative followed by a positive */
   def sumNextTwo(idx: Int) = {
-    if (idx + 1 < cdata.length)
-      cdata(idx) + cdata(idx + 1)
-    else if (idx < cdata.length) cdata(idx) else 0
+    if (idx + 2 < cdata.length)
+      cdata(idx + 1) + cdata(idx + 2)
+    else if (idx + 1 < cdata.length) cdata(idx + 1) else 0
   }
 
   /** @return the original data coalesced in to alternative positive and negative values */

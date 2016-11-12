@@ -56,7 +56,7 @@ class SolutionTest extends FunSuite {
     assert(region.largestSubArraySum() == -3)
   }
 
-  test("test for single posative") {
+  test("test for single positive") {
     val region = new ArrayData(Array(3))
     assert(region.largestContiguousSubArraySum() == 3)
     assert(region.largestSubArraySum() == 3)
@@ -92,11 +92,35 @@ class SolutionTest extends FunSuite {
     assert(region.largestSubArraySum() == 131)
   }
 
-  test("test sequence with cancelation pairs") {
+  test("test sequence with cancellation pairs") {
     val region = new ArrayData(Array(
       7, -1, 6, 4, 3, -1, -1, -2, -1, 3, 5, 1, 10, -100, 100, 1, 1, -5, 1, 1, 4, 5, 6, 7, -3, 1, -2
     ))
     assert(region.largestContiguousSubArraySum() == 121)
     assert(region.largestSubArraySum() == 166)
+  }
+
+  test("test sequence with cancellation pairs2") {
+    val region = new ArrayData(Array(
+      7, -1, 6, 4, 3, -1, -1, -2, -1, 3, 5, 1, 10, -200, 100, 1, 1, -5, 1, 1, 4, 5, 6, 7, -3, 1, -2
+    ))
+    assert(region.largestContiguousSubArraySum() == 121)
+    assert(region.largestSubArraySum() == 166)
+  }
+
+  test("test sequence with cancellation pairs3") {
+    val region = new ArrayData(Array(
+      7, -1, 6, 4, 3, -1, -1, -2, -1, 3, 5, 1, 10, -80, 100, 1, 1, -5, 1, 1, 4, 5, 6, 7, -3, 1, -2
+    ))
+    assert(region.largestContiguousSubArraySum() == 121)
+    assert(region.largestSubArraySum() == 166)
+  }
+
+  test("test sequence with dupes") {
+    val region = new ArrayData(Array(
+      5, -5, 5, 5, -5, -5, 5, 5, 5, -5, -5, 5, -5, -5, -5, 5
+    ))
+    assert(region.largestContiguousSubArraySum() == 15)
+    assert(region.largestSubArraySum() == 40)
   }
 }
