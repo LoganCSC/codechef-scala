@@ -17,7 +17,7 @@ object Solution {
 
   private def readBoard(): Grid = {
     val dim = StdIn.readLine().toInt
-    val matrix = for (i <-1 to dim) yield StdIn.readLine().toArray
+    val matrix = for (i <- 1 to dim) yield StdIn.readLine().toArray
     val Array(startRow, startCol, goalRow, goalCol) = StdIn.readLine().split(" ").map(_.toInt)
     val start = new Location(startRow, startCol)
     val goal = new Location(goalRow, goalCol)
