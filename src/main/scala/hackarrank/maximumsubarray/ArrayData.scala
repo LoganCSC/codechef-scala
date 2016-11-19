@@ -4,7 +4,6 @@ package hackarrank.maximumsubarray
   * @param data An array of integers to be processed
   */
 class ArrayData(data: Array[Int]) {
-  val maxValue = data.max
 
   def largestContiguousSubArraySum(): Int = {
     var pos = 0
@@ -17,11 +16,12 @@ class ArrayData(data: Array[Int]) {
       if (sum < 0) sum = 0
       pos += 1
     }
-    if (maxSubSum == 0) maxValue else maxSubSum
+    retValue(maxSubSum)
   }
 
   def largestSubArraySum(): Int = {
-    val lsum = data.filter(_ > 0).sum
-    if (lsum == 0) maxValue else lsum
+    retValue(data.filter(_ > 0).sum)
   }
+
+  def retValue(maxSubSum: Int) = if (maxSubSum == 0) data.max else maxSubSum
 }
