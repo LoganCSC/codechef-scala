@@ -42,25 +42,6 @@ object Solution {
     a
   }
 
-  /*
- def getNumFactors(num: Long): Int = {
-   if (cache.contains(num))
-     return cache(num)._1
-   val limit = Math.sqrt(num).toInt + 1
-   if (num == 1)
-     1
-   else if (num == 2 || num == 3)
-     2
-   else {
-     for (i <- 2 to limit) {
-       if (num % i == 0)
-         return 1 + getNumFactors(num / i)
-     }
-   }
-
-   2 // two factors 1 and itself
- }   */
-
   def getNumFactors(num: Long): Int = {
     findDivisors(num).length
   }
