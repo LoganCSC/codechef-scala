@@ -15,5 +15,4 @@ object Solution {
       println(array.largestContiguousSubArraySum() + " " + array.largestSubArraySum)
     }
   }
-
 }
