@@ -1,6 +1,6 @@
 package experiments.candymachine
 
-import StateOnly._
+import State._
 
 
 sealed trait Input
@@ -24,7 +24,7 @@ object CandyMachine {
       case (Turn, Machine(false, candy, coin)) => Machine(locked = true, candy - 1, coin)
     }
 
-  def simulateMachine(inputs: List[Input]): StateOnly[Machine] = for {
+  def simulateMachine(inputs: List[Input]): State[Machine] = for {
     m <- sequence(inputs.map(i => modify(update(i, _: Machine))))
   } yield m
 }
