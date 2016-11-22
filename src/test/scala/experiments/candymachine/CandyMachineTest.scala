@@ -12,7 +12,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = true, candies = 10, coins = 0)
 
     assertResult(Machine(locked = true, 9, 1)) {
-      CandyMachine.simulateMachine(List(Coin, Turn)).run(machine)
+      CandyMachine.simulate(List(Coin, Turn)).run(machine)
     }
   }
 
@@ -22,7 +22,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = false, 10, 0)
 
     assertResult(Machine(locked = false, 8, 2)) {
-      CandyMachine.simulateMachine(List(Turn, Coin, Turn, Coin, Coin)).run(machine)
+      CandyMachine.simulate(List(Turn, Coin, Turn, Coin, Coin)).run(machine)
     }
   }
 
@@ -31,7 +31,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = false, 10, 0)
 
     assertResult(Machine(locked = true, 7, 2)) {
-      CandyMachine.simulateMachine(List(Turn, Coin, Turn, Coin, Coin, Coin, Coin, Turn)).run(machine)
+      CandyMachine.simulate(List(Turn, Coin, Turn, Coin, Coin, Coin, Coin, Turn)).run(machine)
     }
   }
 
@@ -40,7 +40,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = true, 10, 0)
 
     assertResult(Machine(locked = false, 10, 1)) {
-      CandyMachine.simulateMachine(List(Coin)).run(machine)
+      CandyMachine.simulate(List(Coin)).run(machine)
     }
   }
 
@@ -49,7 +49,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = true, 10, 0)
 
     assertResult(Machine(locked = false, 10, 1)) {
-      CandyMachine.simulateMachine(List(Coin, Coin, Coin)).run(machine)
+      CandyMachine.simulate(List(Coin, Coin, Coin)).run(machine)
     }
   }
 
@@ -58,7 +58,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = false, 10, 0)
 
     assertResult(Machine(locked = true, 9, 0)) {
-      CandyMachine.simulateMachine(List(Turn, Turn, Turn)).run(machine)
+      CandyMachine.simulate(List(Turn, Turn, Turn)).run(machine)
     }
   }
 
@@ -67,7 +67,7 @@ class CandyMachineTest extends FunSuite {
     val machine = Machine(locked = false, 0, 5)
 
     assertResult(Machine(locked = false, 0, 5)) {
-      CandyMachine.simulateMachine(List(Turn, Coin, Turn, Turn, Coin, Turn)).run(machine)
+      CandyMachine.simulate(List(Turn, Coin, Turn, Turn, Coin, Turn)).run(machine)
     }
   }
 }

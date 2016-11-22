@@ -2,9 +2,7 @@ package experiments.candymachine
 
 import State.unit
 
-/**
-  * From https://github.com/fpinscala/fpinscala
-  */
+
 case class State[S](run: S => (S)) {
 
   def map[A, B](f: S => S): State[S] = flatMap(a => unit(f(a)))
@@ -20,11 +18,6 @@ object State {
 
   def unit[S, A](a: A): State[S] = State(s => s)
 
-  /**
-    * This implementation uses a loop internally and is the same recursion
-    * pattern as a left fold. It is quite common with left folds to build
-    * up a list in reverse order, then reverse it at the end.
-    */
   def sequence[S, A](sas: List[State[S]]): State[S] = {
     def go(s: S, actions: List[State[S]]): S =
       actions match {

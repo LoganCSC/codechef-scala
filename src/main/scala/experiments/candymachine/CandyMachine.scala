@@ -24,7 +24,13 @@ object CandyMachine {
       case (Turn, Machine(false, candy, coin)) => Machine(locked = true, candy - 1, coin)
     }
 
-  def simulateMachine(inputs: List[Input]): State[Machine] = for {
+  /**
+    * Called like this:
+    *   val newState = CandyMachine.simulate(List(Turn, Coin)).run(initialMachineState)
+    * @param inputs list of Inputs like List(Coin, Turn, Coin)
+    * @return the new state of the candy machine
+    */
+  def simulate(inputs: List[Input]): State[Machine] = for {
     m <- sequence(inputs.map(i => modify(update(i, _: Machine))))
   } yield m
 }
