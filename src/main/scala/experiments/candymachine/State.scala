@@ -6,10 +6,13 @@ import State.unit
   * From https://github.com/fpinscala/fpinscala
   */
 case class State[S, +A](run: S => (A, S)) {
+
   def map[B](f: A => B): State[S, B] =
     flatMap(a => unit(f(a)))
+
   def map2[B,C](sb: State[S, B])(f: (A, B) => C): State[S, C] =
     flatMap(a => sb.map(b => f(a, b)))
+
   def flatMap[B](f: A => State[S, B]): State[S, B] = State(s => {
     val (a, s1) = run(s)
     f(a).run(s1)
@@ -32,12 +35,14 @@ object State {
     * (We could also use a collection.mutable.ListBuffer internally.)
     */
   def sequence[S, A](sas: List[State[S, A]]): State[S, List[A]] = {
-    def go(s: S, actions: List[State[S,A]], acc: List[A]): (List[A],S) =
+    def go(s: S, actions: List[State[S, A]], acc: List[A]): (List[A], S) =
       actions match {
         case Nil => (acc.reverse, s)
-        case h :: t => h.run(s) match { case (a,s2) => go(s2, t, a :: acc) }
+        case h :: t => h.run(s) match {
+          case (a,s2) => go(s2, t, a :: acc)
+        }
       }
-    State((s: S) => go(s,sas,List()))
+    State((s: S) => go(s, sas, List()))
   }
 
   /**
@@ -48,7 +53,7 @@ object State {
     * technically has to also walk the list twice, since it has to unravel the call
     * stack, not being tail recursive. And the call stack will be as tall as the list is long.
     */
-  def sequenceViaFoldLeft[S,A](l: List[State[S, A]]): State[S, List[A]] =
+  def sequenceViaFoldLeft[S, A](l: List[State[S, A]]): State[S, List[A]] =
   l.reverse.foldLeft(unit[S, List[A]](List()))((acc, f) => f.map2(acc)( _ :: _ ))
 
   def modify[S](f: S => S): State[S, Unit] = for {
