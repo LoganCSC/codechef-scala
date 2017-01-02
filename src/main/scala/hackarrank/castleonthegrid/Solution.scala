@@ -1,6 +1,8 @@
 package hackarrank.castleonthegrid
 
 import common.Location
+import hackarrank.castleonthegrid.astarsolution.AStarCastleSolver
+
 import scala.io.StdIn
 
 /**
@@ -11,7 +13,7 @@ object Solution {
   def main(args: Array[String]) {
 
     val board = readBoard()
-    val solver = new SimpleCastleSolver(board)
+    val solver = new AStarCastleSolver(board)
     println(solver.moves)
   }
 

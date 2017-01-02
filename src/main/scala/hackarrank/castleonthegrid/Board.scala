@@ -5,7 +5,7 @@ import common.Location
 /** Maintains the current position on the immutable grid and calculates possible next moves. Immutable */
 class Board(val grid: Grid, val currentPosition: Location) {
 
-  def isAtGoal = currentPosition == grid.goal
+  def isAtGoal: Boolean = currentPosition == grid.goal
 
   /** This could be improved by looking to see if there is an X in the way. If so then min is 4
     * @return a lower bound on the number of steps that it will take to reach the goal */
