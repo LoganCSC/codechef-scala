@@ -1,9 +1,9 @@
 package hackerrank.castleonthegrid
 
 import common.Location
-//import hackarrank.castleonthegrid.astarsolution.AStarCastleSolver
+import hackarrank.castleonthegrid.astarsolution.AStarCastleSolver
 import hackarrank.castleonthegrid2.Grid
-//import hackarrank.castleonthegrid.{Board, Grid, SimpleCastleSolver}
+import hackarrank.castleonthegrid.{Board, Grid, SimpleCastleSolver}
 import org.scalatest.FunSuite
 
 
@@ -248,11 +248,32 @@ class SolutionTest extends FunSuite {
   }
 
 
-  def verifySolution(start: Location, goal: Location, matrix: Array[Array[Char]], expectedNumSteps: Int) = {
-    //val board = new Board(new Grid(start, goal, matrix), start)
-    //val solver = new AStarCastleSolver(board)
-    //val solver = new SimpleCastleSolver(board)
-    val grid = new Grid(start, goal, matrix)
+  // verify that both aproaches to solving work.
+  def verifySolution(start: Location,
+                     goal: Location, matrix: Array[Array[Char]], expectedNumSteps: Int): Unit = {
+    verifySolutionUsingAStar(start, goal, matrix, expectedNumSteps)
+    verifySolutionUsingHandTuned(start, goal, matrix, expectedNumSteps)
+  }
+
+  def verifySolutionUsingAStar(start: Location,
+                     goal: Location, matrix: Array[Array[Char]], expectedNumSteps: Int): Unit = {
+
+    val grid = new hackarrank.castleonthegrid.Grid(start, goal, matrix)
+    val board = new Board(grid, start)
+    val solver = new AStarCastleSolver(board)
+    val moves: Int = solver.moves
+
+    if (expectedNumSteps == -1)
+      assert(moves == -1)
+    else {
+      assertResult(expectedNumSteps, "Failed to find min. Grid = \n" + grid) { moves }
+    }
+  }
+
+  def verifySolutionUsingHandTuned(start: Location,
+                     goal: Location, matrix: Array[Array[Char]], expectedNumSteps: Int): Unit = {
+
+    val grid = new hackarrank.castleonthegrid2.Grid(start, goal, matrix)
     val moves = grid.findMinimumMoves
 
     if (expectedNumSteps == -1)
