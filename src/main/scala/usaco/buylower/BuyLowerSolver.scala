@@ -16,26 +16,46 @@ class BuyLowerSolver(var prices: Seq[Int]) {
 
   private var lists: List[List[List[Int]]] = List()
 
-
   def solve(): String = {
-    for (v <- prices)
-      lists = addToLists(v)
+    for (v <- prices) {
+      addToLists(v)
+    }
 
-    new ResultExtractor(lists).getResult
+    println("lists = \n" + lists.map(_.mkString("(", ", ", ")")).mkString("\n"))
+    getResult
   }
 
-  private def addToLists(v: Int): List[List[List[Int]]] = {
-    if (lists.isEmpty || valueLargerThanAny(v))
+  private def addToLists(v: Int) = {
+    if (lists.isEmpty || lists.exists(v > _.head.head))
       lists +:= List(List(v))
-
-    for (list <- lists) yield addValueToList(v, list)
+    lists = lists.map(addValueToList(v, _))
+    lists.foreach {
+      case first :: (second :: tail) =>
+        if (first.forall(v > _) && second.exists(v < _))
+          lists +:= List(v) +: second.filter(_ > v) +: tail
+      case _ =>
+    }
   }
 
-  private def valueLargerThanAny(v: Int): Boolean =
-    !lists.exists(_.head.head > v)   // list => list.head.nonEmpty &&
-
-  private def addValueToList(v: Int, list:List[List[Int]]): List[List[Int]] = {
-    list
+  private def addValueToList(v: Int, list:List[List[Int]]): List[List[Int]] = list match {
+    case first :: (second :: tail) =>
+      if (first.forall(v > _) && second.forall(v < _))
+        (v +: first) +: second +: tail
+      else if (first.forall(v < _))
+        List(v) +: first +: second +: tail
+      else list
+    case head :: Nil =>
+      if (v > head.head) List(v +: head)
+      else if (head.forall(v < _)) List(v) +: List(head)
+      else list
   }
 
+  private def getResult: String = {
+    val numLists = lists.map(_.map(lst => BigInt.int2bigInt(lst.length)))
+    val longest = numLists.map(_.length).max
+    val longestLists = numLists.filter(_.length == longest)
+    val numLongest: BigInt = longestLists.map(_.product).sum
+
+    s"$longest $numLongest"
+  }
 }
