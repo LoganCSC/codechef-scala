@@ -7,7 +7,7 @@ import scala.io.StdIn
  */
 object Solution extends App {
 
-  def readPrices(): Seq[Int] = {
+  def readPrices(): IndexedSeq[Int] = {
     val numPrices = StdIn.readLine().toInt
     for (i <- 0 until numPrices) yield StdIn.readInt()
   }

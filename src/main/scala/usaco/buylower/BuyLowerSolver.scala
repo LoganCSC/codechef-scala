@@ -1,61 +1,50 @@
 package usaco.buylower
 
-/**
-  * Convert the sequence of prices into a list of lists of lists.
-  * For example, the sequence 10, 20, 30, 25, 35, 15, 55, 45, 27, 40, 60
-  * should produce (
-  *  ((10, 20, 30)),
-  *  ((20, 30), (15),
-  *  ((30), (25), (15)),
-  *  ((35), (15,27)),
-  *  ((55), (45), (27),
-  *  ((60))
-  * )
-  */
-class BuyLowerSolver(var prices: Seq[Int]) {
+import scala.collection.immutable.HashMap
 
-  private var lists: List[List[List[Int]]] = List()
+/**
+  * Convert the sequence of prices into a list of lists of lists, then send it to ResultExtractor.
+  * For example, the sequence 10, 20, 30, 25, 35, 15, 55, 45, 27,
+  * should produce (
+  * (List(27), List(35, 30))
+    *(List(27))
+    *(List(27), List(45))
+    *(List(27), List(45), List(55))
+    *(List(27, 15), List(35))
+    *(List(15), List(25), List(30))
+    *(List(15), List(35, 30, 20))
+    *(List(55, 35, 30, 20, 10))  )
+  */
+class BuyLowerSolver(var prices: IndexedSeq[Int]) {
+
+  private var cache = new HashMap[Int, List[List[Int]]]
+  cache += (2 -> List(List(3)))
+
+
 
   def solve(): String = {
-    for (v <- prices) {
-      addToLists(v)
+    findLongestFrom(0, prices)
+
+    new ResultExtractor(cache).getResult
+  }
+
+  /** Might have to replace the recursive call with a stack, or do tail recursion */
+  private def findLongestFrom(i: Int, array: IndexedSeq[Int]): List[List[Int]] = {
+    if (cache.contains(i)) cache(i)
+    else if (i == array.length) List(List(array(i)))
+    else {
+      val v = array(i)
+      val list = findLongestFrom(i + 1, array)
+      val result: List[List[Int]] =
+        if (list.head.forall(v > _)) List(v) +: list
+        else if (list.tail.nonEmpty && list.tail.head.forall(v > _))
+          list.head +: (v +: list.tail.head) +: list.tail.tail
+        else list
+
+      println(result.mkString(","))
+      cache += i -> result
+      result
     }
-
-    println("lists = \n" + lists.map(_.mkString("(", ", ", ")")).mkString("\n"))
-    getResult
   }
 
-  private def addToLists(v: Int) = {
-    if (lists.isEmpty || lists.exists(v > _.head.head))
-      lists +:= List(List(v))
-    lists = lists.map(addValueToList(v, _))
-    lists.foreach {
-      case first :: (second :: tail) =>
-        if (first.forall(v > _) && second.exists(v < _))
-          lists +:= List(v) +: second.filter(_ > v) +: tail
-      case _ =>
-    }
-  }
-
-  private def addValueToList(v: Int, list:List[List[Int]]): List[List[Int]] = list match {
-    case first :: (second :: tail) =>
-      if (first.forall(v > _) && second.forall(v < _))
-        (v +: first) +: second +: tail
-      else if (first.forall(v < _))
-        List(v) +: first +: second +: tail
-      else list
-    case head :: Nil =>
-      if (v > head.head) List(v +: head)
-      else if (head.forall(v < _)) List(v) +: List(head)
-      else list
-  }
-
-  private def getResult: String = {
-    val numLists = lists.map(_.map(lst => BigInt.int2bigInt(lst.length)))
-    val longest = numLists.map(_.length).max
-    val longestLists = numLists.filter(_.length == longest)
-    val numLongest: BigInt = longestLists.map(_.product).sum
-
-    s"$longest $numLongest"
-  }
 }
