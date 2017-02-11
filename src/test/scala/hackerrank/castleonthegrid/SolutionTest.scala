@@ -38,8 +38,8 @@ class SolutionTest extends FunSuite {
       ".X......X.".toArray
     )
 
-    val start = new Location(1, 1)
-    val goal = new Location(7, 8)
+    val start = Location(1, 1)
+    val goal = Location(7, 8)
     verifySolution(start, goal, matrix, -1)
   }
 

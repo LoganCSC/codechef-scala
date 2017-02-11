@@ -21,7 +21,7 @@ object Main {
 
   def getCoinValue(coin: Long): Long = {
     if (cache.contains(coin)) {
-      cache.get(coin).get
+      cache(coin)
     } else {
       val half = getCoinValue(coin / 2)
       val third = getCoinValue(coin / 3)
