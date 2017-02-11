@@ -6,13 +6,11 @@ import scala.io.StdIn
 /**
  * https://www.hackerrank.com/contests/compsci-club2/challenges/reduced-string
  */
-object Solution {
+object Solution extends App {
 
-  def main(args: Array[String]) {
-    val str = StdIn.readLine()
-    val result = reduce(str)
-    println(if (result == "") "Empty String" else result)
-  }
+  val str = StdIn.readLine()
+  val result = reduce(str)
+  println(if (result == "") "Empty String" else result)
 
   /** wald the string, making reductions when possible */
   def reduce(str: String): String = {

@@ -15,14 +15,9 @@ object Solution {
   // dynamic programming cache
   val cache = mutable.Map[(BigDecimal, Long), BigDecimal]()
 
-  def main(args: Array[String]) {
-    val input = StdIn.readLine().split(" ").map(_.toLong)
-    println(expNumCells(input(0).toInt, input(1).toInt, input(2)))
-  }
 
-  def expNumCells(a: Int, b: Int, t: Long): Long = {
+  def expNumCells(a: Int, b: Int, t: Long): Long =
     myPow((a + b) / 2.0, t).toLong
-  }
 
   def myPow(base: BigDecimal, exp: Long): BigDecimal = {
     val key = (base, exp)
@@ -38,4 +33,10 @@ object Solution {
       result
     }
   }
+
+  def main(args: Array[String]) {
+    val input = StdIn.readLine().split(" ").map(_.toLong)
+    println(expNumCells(input(0).toInt, input(1).toInt, input(2)))
+  }
+
 }

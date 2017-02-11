@@ -5,13 +5,12 @@ import scala.io.StdIn
 /**
  * https://www.hackerrank.com/contests/rookierank/challenges/counting-valleys
  */
-object Solution {
+object Solution extends App {
 
-  def main(args: Array[String]) {
-    val num = StdIn.readInt()
-    val steps = StdIn.readLine()
-    println(countValleys(steps))
-  }
+  val num = StdIn.readInt()
+  val steps = StdIn.readLine()
+  println(countValleys(steps))
+
 
   def countValleys(stepsStr: String): Int = {
     val steps = stepsStr.toList

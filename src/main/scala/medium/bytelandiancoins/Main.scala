@@ -6,17 +6,9 @@ import scala.io.StdIn
 /**
  * https://www.codechef.com/problems/COINS
  */
-object Main {
+object Main  {
 
   val cache: mutable.Map[Long, Long] = mutable.Map[Long, Long](0L -> 0L)
-
-  def main(args: Array[String]) {
-
-    Iterator.continually(StdIn.readLine)
-      .takeWhile(x => {
-        x != null && x != "" && x != null
-      }).foreach(coin => println(getCoinValue(coin.toLong)))
-  }
 
 
   def getCoinValue(coin: Long): Long = {
@@ -30,6 +22,13 @@ object Main {
       cache.put(coin, result)
       result
     }
+  }
+
+  def main(args: Array[String]) {
+    Iterator.continually(StdIn.readLine)
+      .takeWhile(x => {
+        x != null && x != "" && x != null
+      }).foreach(coin => println(getCoinValue(coin.toLong)))
   }
 
 }
