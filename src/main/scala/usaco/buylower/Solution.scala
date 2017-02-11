@@ -1,8 +1,5 @@
 package usaco.buylower
 
-import hackarrank.maximumsubarray.ArrayData
-
-import scala.collection.mutable.ListBuffer
 import scala.io.StdIn
 
 /**
@@ -10,15 +7,10 @@ import scala.io.StdIn
  */
 object Solution extends App {
 
-  val numPrices = StdIn.readLine().toInt
-  var ct = 0
-  var prices: Array[Int] = Array.ofDim(numPrices)
-
-  while (ct < numPrices) {
-    prices(ct) = StdIn.readInt()
-    ct += 1
+  def readPrices(): Seq[Int] = {
+    val numPrices = StdIn.readLine().toInt
+    for (i <- 0 until numPrices) yield StdIn.readInt()
   }
 
-  println(new BuyLowerSolver(prices).solve())
-
+  println(new BuyLowerSolver(readPrices()).solve())
 }
