@@ -79,12 +79,12 @@ class ResultExtractorTest extends FunSuite {
   test("made up: more than one longest") {
     val cache: Array[List[List[Int]]] = Array(
       List(List(10), List(7, 8), List(3)),
-      List(List(20, 21), List(15, 16), List(7, 8, 9)), // the first el always counts as 1
+      List(List(20, 21), List(15, 16), List(7, 8, 9)),
       List(List(25), List(15), List(7, 8)),
       List(List(15), List(7, 8)),
       List(List(8))
     )
-    assertResult("3 10") {
+    assertResult("3 16") {
       new ResultExtractor(cache).getResult
     }
   }

@@ -24,14 +24,12 @@ class BuyLowerSolver(var array: IndexedSeq[Int]) {
     cache(i)
   }
 
-  private def createLongestList(v: Int, list: List[List[Int]]) = {
-    if (list.isEmpty) List(List(v))
-    else if (list.tail.isEmpty && list.head.exists(v > _)) List(v) +: List(list.head.filter(v > _))
-    else if (list.tail.isEmpty) List(v +: list.head)
-    else if (list.head.contains(v)) list
-    else if (list.head.exists(v > _)) List(v) +: list.head.filter(_ < v) +: list.tail
-    else if (list.tail.head.forall(v > _)) (v +: list.head) +: list.tail.head +: list.tail.tail
-    else list
+  private def createLongestList(v: Int, list: List[List[Int]]) = list match {
+    case Nil => List(List(v))
+    case head :: Nil if head.exists(v > _) => List(v) +: List(head.filter(v > _))
+    case head :: Nil => List(v +: head)
+    case head :: tail if head.contains(v) => list
+    case head :: tail if head.exists(v > _) => List(v) +: head.filter(_ < v) +: tail
   }
 
   /** @return the longest list to the right of i */

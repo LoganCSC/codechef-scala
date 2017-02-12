@@ -3,6 +3,7 @@ package usaco.buylower
 /**
   * Given the lists of lists corresponding to the longest sequence at each position,
   * find the longest sequence and how often it occurs.
+  *
   */
 class ResultExtractor(cache: Array[List[List[Int]]]) {
 
@@ -18,12 +19,11 @@ class ResultExtractor(cache: Array[List[List[Int]]]) {
       if (!startValueSet.contains(value)) {
         startValueSet += value
         // consider the length of the first element to always be one.
-        totalOccurrences += list.tail.map(x => BigInt(x.length)).product
+        totalOccurrences += list.map(x => BigInt(x.length)).product
       }
     }
 
     s"$longest $totalOccurrences"
   }
-
 
 }
