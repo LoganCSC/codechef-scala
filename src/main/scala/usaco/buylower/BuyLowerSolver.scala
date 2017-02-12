@@ -7,22 +7,24 @@ import scala.collection.immutable.HashMap
   */
 class BuyLowerSolver(var prices: IndexedSeq[Int]) {
 
-  private var cache = new HashMap[Int, List[List[Int]]]
+  private var cache: Array[List[List[Int]]] = Array.fill(prices.length) { Nil }
 
   def solve(): String = {
-    findLongestFrom(0, prices)
+    // loop from the right so we can avoid recursion
+    for (i <- prices.length - 1 to 0 by -1)
+      findLongestFrom(i, prices)
+
     new ResultExtractor(cache, prices).getResult
   }
 
   /** Might have to replace the recursive call with a stack, or do tail recursion */
   private def findLongestFrom(i: Int, array: IndexedSeq[Int]): List[List[Int]] = {
     val v = array(i)
-    if (!cache.contains(i)) {
+    if (cache(i) == Nil) {
       if (i == array.length - 1)
-        cache += i -> List(List(array(i)))
+        cache(i) = List(List(array(i)))
       else {
         val list = getMaxListToRight(i, array)
-        println ("max list to right of " + array(i) + " is " + list)
         val result: List[List[Int]] =
           if (list.isEmpty)
             List(List(v))
@@ -38,8 +40,8 @@ class BuyLowerSolver(var prices: IndexedSeq[Int]) {
             (v +: list.head) +: list.tail.head +: list.tail.tail
           else list
 
-        println(result)
-        cache += i -> result
+        //println(result)
+        cache(i) = result
       }
     }
     cache(i)
@@ -49,7 +51,7 @@ class BuyLowerSolver(var prices: IndexedSeq[Int]) {
   private def getMaxListToRight(i: Int, array: IndexedSeq[Int]): List[List[Int]] = {
     val v = array(i)
     val lists = (i + 1 until array.length)
-      .map(findLongestFrom(_, array))
+      .map(cache(_))
       .filter(_.head.exists(v > _))
       .map(list => (list, list.length))
     var longest = if (lists.nonEmpty) lists.reduceRight((a, b) => if (a._2 > b._2) a else b)

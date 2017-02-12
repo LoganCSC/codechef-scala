@@ -8,22 +8,22 @@ package usaco.buylower
   *  ((55), (45), (27, 28)  // represents 2 longest sequences
   * ) would yield "3, 8" because the longest sequence is 3 and there are 6 + 2
   */
-class ResultExtractor(cache: Map[Int, List[List[Int]]], array: IndexedSeq[Int]) {
+class ResultExtractor(cache: Array[List[List[Int]]], array: IndexedSeq[Int]) {
 
   def getResult: String = {
 
-    val longest: Int = cache.map(_._2.length).max
-    val longestEntries = cache.filter(_._2.length == longest)
-    println("longest = " + longestEntries.mkString("\n"))
-    var totalOccurrences = 0
+    val longest: Int = cache.map(_.length).max
+    val longestEntries = cache.zipWithIndex.filter(_._1.length == longest)
+    //println("longest = " + longestEntries.mkString("\n"))
+    var totalOccurrences: BigInt = BigInt(0)
     var startValueSet: Set[Int] = Set()
-    for (idx <- longestEntries.keySet.toList.sorted) {
-      val value = array(idx)
-      val list = longestEntries(idx)
+    for (idx <- longestEntries.indices) {
+      val value = array(longestEntries(idx)._2)
+      val list = longestEntries(idx)._1
       if (!startValueSet.contains(value)) {
         startValueSet += value
         // consider the length of the first element to always be one.
-        totalOccurrences += list.tail.map(_.length).product
+        totalOccurrences += list.tail.map(x => BigInt(x.length)).product
       }
     }
 

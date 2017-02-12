@@ -75,29 +75,57 @@ class SolutionTest extends FunSuite {
     }
   }
 
-  test("5000 element case (random with descending trend)") {
-    val rand = new Random(1)
-    var maxNum: Int = 510
-    val array: Array[Int] = Array.fill(500) {
-      maxNum -= 1
-      rand.nextInt(maxNum)
-    }
-
+  test("500 element case (random with descending trend)") {
+    val array = bigArray(500, ascending = false)
     assertResult("57 49152") {
       new BuyLowerSolver(array).solve()
     }
   }
 
-  test("5000 element case (random with ascending trend)") {
-    val rand = new Random(1)
-    var maxNum: Int = 10
-    val array: Array[Int] = Array.fill(500) {
-      maxNum += 1
-      rand.nextInt(maxNum)
-    }
-
+  test("500 element case (random with ascending trend)") {
+    val array = bigArray(500, ascending = true)
     assertResult("22 32") {
       new BuyLowerSolver(array).solve()
     }
+  }
+
+
+  test("1000 element case (random with descending trend)") {
+    val array = bigArray(1000, ascending = false)
+    assertResult("99 113246208") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
+
+  test("1000 element case (random with ascending trend)") {
+    val array = bigArray(1000, ascending = true)
+    assertResult("36 48640") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
+
+  test("5000 element case (random with descending trend)") {
+    val array = bigArray(5000, ascending = false)
+    assertResult("226 49862447699362578432") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
+
+  test("5000 element case (random with ascending trend)") {
+    val array = bigArray(5000, ascending = true)
+    assertResult("83 73728") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
+
+  def bigArray(size: Int, ascending: Boolean): Array[Int] = {
+    val rand = new Random(1)
+    val minNum = 10
+    var maxNum: Int = if (ascending) minNum else size + minNum
+    val array: Array[Int] = Array.fill(size) {
+      maxNum += (if (ascending) 1 else -1)
+      rand.nextInt(maxNum)
+    }
+    array
   }
 }
