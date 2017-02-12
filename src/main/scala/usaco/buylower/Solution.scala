@@ -1,4 +1,4 @@
-package usaco.buylower
+import usaco.buylower.BuyLowerSolver
 
 import scala.io.StdIn
 

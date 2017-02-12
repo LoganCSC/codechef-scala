@@ -1,8 +1,9 @@
 package usaco.buylower
 
+
 /**
-  * Convert the sequence of prices into a list of lists of lists, then send it to ResultExtractor.
-  * @param array a list of pirces to search
+  * Convert the sequence of prices into an array of longest sequences, then send it to ResultExtractor.
+  * @param array a list of prices to search
   * @author Barry Becker
   */
 class BuyLowerSolver(var array: IndexedSeq[Int]) {
@@ -36,8 +37,7 @@ class BuyLowerSolver(var array: IndexedSeq[Int]) {
   private def getMaxListToRight(i: Int): List[List[Int]] = {
     val v = array(i)
     val lists = cache.slice(i + 1, cache.length).filter(_.head.exists(v > _)).map(list => (list, list.length))
-    var longest = if (lists.nonEmpty) lists.max(Ordering.by((_: (_, Int))._2))
-      else (Nil, 0)
+    var longest = if (lists.nonEmpty) lists.max(Ordering.by((_: (_, Int))._2)) else (Nil, 0)
     val longestLength = longest._2
     if (longestLength > 0) {
       val longestLists = lists.filter(_._2 == longestLength).map(_._1)
