@@ -1,25 +1,20 @@
 package usaco.buylower
 
 /**
-  * Given the lists of lists of lists find the longest sequence and how often it occurs
-  * For example (
-  *  ((30), (25, 26, 27), (15, 16)), // represents 6 longest sequences
-  *  ((35), (15, 27)),
-  *  ((55), (45), (27, 28)  // represents 2 longest sequences
-  * ) would yield "3, 8" because the longest sequence is 3 and there are 6 + 2
+  * Given the lists of lists corresponding to the longest sequence at each position,
+  * find the longest sequence and how often it occurs.
   */
-class ResultExtractor(cache: Array[List[List[Int]]], array: IndexedSeq[Int]) {
+class ResultExtractor(cache: Array[List[List[Int]]]) {
 
   def getResult: String = {
 
     val longest: Int = cache.map(_.length).max
     val longestEntries = cache.zipWithIndex.filter(_._1.length == longest)
-    //println("longest = " + longestEntries.mkString("\n"))
     var totalOccurrences: BigInt = BigInt(0)
-    var startValueSet: Set[Int] = Set()
+    var startValueSet: Set[Int] = Set() // only count the first seq with same start value
     for (idx <- longestEntries.indices) {
-      val value = array(longestEntries(idx)._2)
       val list = longestEntries(idx)._1
+      val value = list.head.head
       if (!startValueSet.contains(value)) {
         startValueSet += value
         // consider the length of the first element to always be one.

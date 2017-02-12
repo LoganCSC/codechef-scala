@@ -1,60 +1,44 @@
 package usaco.buylower
 
-import scala.collection.immutable.HashMap
-
 /**
   * Convert the sequence of prices into a list of lists of lists, then send it to ResultExtractor.
+  * @param array a list of pirces to search
+  * @author Barry Becker
   */
-class BuyLowerSolver(var prices: IndexedSeq[Int]) {
+class BuyLowerSolver(var array: IndexedSeq[Int]) {
 
-  private var cache: Array[List[List[Int]]] = Array.fill(prices.length) { Nil }
+  private val cache: Array[List[List[Int]]] = Array.fill(array.length) { Nil }
 
   def solve(): String = {
     // loop from the right so we can avoid recursion
-    for (i <- prices.length - 1 to 0 by -1)
-      findLongestFrom(i, prices)
+    for (i <- array.length - 1 to 0 by -1)
+      findLongestStartingWith(i)
 
-    new ResultExtractor(cache, prices).getResult
+    new ResultExtractor(cache).getResult
   }
 
-  /** Might have to replace the recursive call with a stack, or do tail recursion */
-  private def findLongestFrom(i: Int, array: IndexedSeq[Int]): List[List[Int]] = {
+  private def findLongestStartingWith(i: Int): List[List[Int]] = {
     val v = array(i)
-    if (cache(i) == Nil) {
-      if (i == array.length - 1)
-        cache(i) = List(List(array(i)))
-      else {
-        val list = getMaxListToRight(i, array)
-        val result: List[List[Int]] =
-          if (list.isEmpty)
-            List(List(v))
-          else if (list.tail.isEmpty && list.head.exists(v > _))
-            List(v) +: List(list.head.filter(v > _))
-          else if (list.tail.isEmpty)
-            List(v +: list.head)
-          else if (list.head.contains(v))
-            list
-          else if (list.head.exists(v > _))
-            List(v) +: list.head.filter(_ < v) +: list.tail
-          else if (list.tail.head.forall(v > _))
-            (v +: list.head) +: list.tail.head +: list.tail.tail
-          else list
-
-        //println(result)
-        cache(i) = result
-      }
-    }
+    if (cache(i) == Nil)
+      cache(i) = if (i == array.length - 1) List(List(v)) else createLongestList(v, getMaxListToRight(i))
     cache(i)
   }
 
-  /** @return the longest list to the right of i) */
-  private def getMaxListToRight(i: Int, array: IndexedSeq[Int]): List[List[Int]] = {
+  private def createLongestList(v: Int, list: List[List[Int]]) = {
+    if (list.isEmpty) List(List(v))
+    else if (list.tail.isEmpty && list.head.exists(v > _)) List(v) +: List(list.head.filter(v > _))
+    else if (list.tail.isEmpty) List(v +: list.head)
+    else if (list.head.contains(v)) list
+    else if (list.head.exists(v > _)) List(v) +: list.head.filter(_ < v) +: list.tail
+    else if (list.tail.head.forall(v > _)) (v +: list.head) +: list.tail.head +: list.tail.tail
+    else list
+  }
+
+  /** @return the longest list to the right of i */
+  private def getMaxListToRight(i: Int): List[List[Int]] = {
     val v = array(i)
-    val lists = (i + 1 until array.length)
-      .map(cache(_))
-      .filter(_.head.exists(v > _))
-      .map(list => (list, list.length))
-    var longest = if (lists.nonEmpty) lists.reduceRight((a, b) => if (a._2 > b._2) a else b)
+    val lists = cache.slice(i + 1, cache.length).filter(_.head.exists(v > _)).map(list => (list, list.length))
+    var longest = if (lists.nonEmpty) lists.max(Ordering.by((_: (_, Int))._2))
       else (Nil, 0)
     val longestLength = longest._2
     if (longestLength > 0) {

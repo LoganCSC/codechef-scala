@@ -89,7 +89,6 @@ class SolutionTest extends FunSuite {
     }
   }
 
-
   test("1000 element case (random with descending trend)") {
     val array = bigArray(1000, ascending = false)
     assertResult("99 113246208") {
