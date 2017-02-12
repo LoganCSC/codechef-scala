@@ -92,7 +92,7 @@ class ResultExtractorTest extends FunSuite {
   test("requires BigInt") {
     val cache: Array[List[List[Int]]] = Array(
       List(List(10), List(7, 8), List(3)),
-      Range(0, 30).map(x => List(1, 1, 1) ).toList,
+      (0 until 30).map(x => List(1, 1, 1)).toList,
       List(List(8))
     )
     assertResult("30 205891132094649") {

@@ -13,13 +13,13 @@ class ResultExtractor(cache: Array[List[List[Int]]]) {
     val longest: Int = cache.map(_.length).max
     val longestEntries = cache.zipWithIndex.filter(_._1.length == longest)
     var totalOccurrences = BigInt(0)
-    var startValueSet: Set[Int] = Set() // only count the first seq with same start value
+    var startValueSet: Set[Int] = Set()
     for (idx <- longestEntries.indices) {
       val list = longestEntries(idx)._1
       val value = list.head.head
+      // only count the first seq with same start value
       if (!startValueSet.contains(value)) {
         startValueSet += value
-        // consider the length of the first element to always be one.
         totalOccurrences += list.map(x => BigInt(x.length)).product
       }
     }
