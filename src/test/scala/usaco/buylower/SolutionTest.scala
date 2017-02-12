@@ -67,11 +67,10 @@ class SolutionTest extends FunSuite {
     }
   }
 
-/*
   test("my tough case") {
-    assertResult("4 6") {
+    assertResult("5 2") {
       new BuyLowerSolver(Array(10, 20, 30, 25, 35, 15, 55, 45, 27, 40, 60, 35, 7, 8, 70)).solve()
     }
   }
-*/
+
 }

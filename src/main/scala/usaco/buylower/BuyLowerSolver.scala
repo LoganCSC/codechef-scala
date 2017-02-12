@@ -52,8 +52,13 @@ class BuyLowerSolver(var prices: IndexedSeq[Int]) {
       .map(findLongestFrom(_, array))
       .filter(_.head.exists(v > _))
       .map(list => (list, list.length))
-    val longest = if (lists.nonEmpty) lists.reduceRight((a, b) => if (a._2 > b._2) a else b)
+    var longest = if (lists.nonEmpty) lists.reduceRight((a, b) => if (a._2 > b._2) a else b)
       else (Nil, 0)
+    val longestLength = longest._2
+    if (longestLength > 0) {
+      val longestLists = lists.filter(_._2 == longestLength).map(_._1)
+      longest = (longestLists.flatMap(_.head).distinct.toList +: longestLists(0).tail, longestLength)
+    }
     longest._1
   }
 }
