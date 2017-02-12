@@ -7,7 +7,6 @@ import org.scalatest.FunSuite
   */
 class SolutionTest extends FunSuite {
 
-/*
   test("one element") {
     assertResult("1 1") {
       new BuyLowerSolver(Array(1)).solve()
@@ -18,14 +17,14 @@ class SolutionTest extends FunSuite {
     assertResult("1 2") {
       new BuyLowerSolver(Array(1, 2)).solve()
     }
-  }*/
+  }
 
   test("up down") {
     assertResult("4 1") {
       new BuyLowerSolver(Array(3, 4, 5, 2, 1, 4, 3, 6, 2)).solve()
     }
   }
-/*
+
   test("2 element decreasing") {
     assertResult("2 1") {
       new BuyLowerSolver(Array(2, 1)).solve()
@@ -38,7 +37,7 @@ class SolutionTest extends FunSuite {
     }
   }
 
-  test("5 element decreasing (with dupe") {
+  test("5 element decreasing (with dupe)") {
     assertResult("4 1") {
       new BuyLowerSolver(Array(4, 3, 3, 2, 1)).solve()
     }
@@ -68,7 +67,7 @@ class SolutionTest extends FunSuite {
     }
   }
 
-
+/*
   test("my tough case") {
     assertResult("4 6") {
       new BuyLowerSolver(Array(10, 20, 30, 25, 35, 15, 55, 45, 27, 40, 60, 35, 7, 8, 70)).solve()

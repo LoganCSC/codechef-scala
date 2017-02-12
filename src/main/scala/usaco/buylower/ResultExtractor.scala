@@ -19,9 +19,11 @@ class ResultExtractor(cache: Map[Int, List[List[Int]]], array: IndexedSeq[Int]) 
     var startValueSet: Set[Int] = Set()
     for (idx <- longestEntries.keySet.toList.sorted) {
       val value = array(idx)
+      val list = longestEntries(idx)
       if (!startValueSet.contains(value)) {
         startValueSet += value
-        totalOccurrences += longestEntries(idx).map(_.length).product
+        // consider the length of the first element to always be one.
+        totalOccurrences += list.tail.map(_.length).product
       }
     }
 
