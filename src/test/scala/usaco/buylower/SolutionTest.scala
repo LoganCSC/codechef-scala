@@ -2,6 +2,8 @@ package usaco.buylower
 
 import org.scalatest.FunSuite
 
+import scala.util.Random
+
 /**
   * @author Barry Becker
   */
@@ -73,4 +75,29 @@ class SolutionTest extends FunSuite {
     }
   }
 
+  test("5000 element case (random with descending trend)") {
+    val rand = new Random(1)
+    var maxNum: Int = 510
+    val array: Array[Int] = Array.fill(500) {
+      maxNum -= 1
+      rand.nextInt(maxNum)
+    }
+
+    assertResult("57 49152") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
+
+  test("5000 element case (random with ascending trend)") {
+    val rand = new Random(1)
+    var maxNum: Int = 10
+    val array: Array[Int] = Array.fill(500) {
+      maxNum += 1
+      rand.nextInt(maxNum)
+    }
+
+    assertResult("22 32") {
+      new BuyLowerSolver(array).solve()
+    }
+  }
 }
