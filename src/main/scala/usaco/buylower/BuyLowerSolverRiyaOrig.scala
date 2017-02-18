@@ -2,11 +2,12 @@ package usaco.buylower
 
 /**
   * Convert the sequence of prices into an array of longest sequences, then send it to ResultExtractor.
+  * Takes 0.52 seconds to run test cases
   * @param prices a list of prices to search
   */
 class BuyLowerSolverRiyaOrig(var prices: IndexedSeq[Int]) {
   private val N: Int = prices.length
-  private val total = Array.ofDim[Int](N)
+  private val len = Array.ofDim[Int](N)
   private val num = Array.ofDim[BigInt](N)
 
   def solve(): String = {
@@ -14,25 +15,31 @@ class BuyLowerSolverRiyaOrig(var prices: IndexedSeq[Int]) {
     var outB: BigInt = 0
 
     for (i <- 0 until N) {
-      var use: Int  = 0
+      var oldLongestLen: Int  = 0
+      val p = prices(i)
       for (j <- 0 until i) {
-        if (prices(i) < prices(j))
-          use = use max total(j)
+        if (prices(j) > p )
+          oldLongestLen = oldLongestLen max len(j)
       }
-      total(i) = use + 1
-      num(i) = if (total(i) == 1) 1 else 0
+      val longestLen = oldLongestLen + 1
+      len(i) = longestLen
+
+      // total(i) == 1 whenever we hit a number larger than any before
+      num(i) = if (longestLen == 1) 1 else 0
 
       for (j <- (i - 1) to 0 by -1) {
-        if (total(j) == use && prices(i) < prices(j))
+        if (len(j) == oldLongestLen && prices(j) > p)
           num(i) += num(j)
-        if (total(j) == total(i) && prices(i) == prices(j))
-          total(j) -= 1
+        if (len(j) == longestLen && p == prices(j)) {
+          // this is to prevent an earlier duplicate entry from counting in the sum
+          len(j) -= 1
+        }
       }
-      outA = outA max total(i)
+      outA = outA max longestLen
     }
 
-    for (i <- (N - 1) to 0 by -1)
-      if (total(i) == outA) outB += num(i)
+    for (i <- 0 until N)
+      if (len(i) == outA) outB += num(i)
 
     s"$outA $outB"
   }

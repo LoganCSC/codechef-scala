@@ -202,4 +202,5 @@ class SolutionTest extends FunSuite {
       new BuyLowerSolver(readJudgeProblem("judge9.data")).solve()
     }
   }
+
 }
