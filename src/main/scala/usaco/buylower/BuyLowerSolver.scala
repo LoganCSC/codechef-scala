@@ -19,9 +19,10 @@ class BuyLowerSolver(var prices: IndexedSeq[Int]) {
       len(i) = longest
       num(i) = if (longest == 1) 1 else 0
 
-      val leftIndices = (i-1) to 0 by -1
-      num(i) += leftIndices.filter(j => len(j) == oldLongest && p < prices(j)).map(num).sum
-      leftIndices.filter(j => len(j) == longest && p == prices(j)).foreach(len(_) -= 1)
+      for (j <- (i-1) to 0 by -1) {
+        if (len(j) == oldLongest && p < prices(j)) num(i) += num(j)
+        if (len(j) == longest && p == prices(j)) len(j) -= 1
+      }
     }
 
     val outA: Int = len.max
