@@ -1,48 +1,30 @@
 package usaco.buylower
 
-
 /**
   * Convert the sequence of prices into an array of longest sequences, then send it to ResultExtractor.
-  * @param array a list of prices to search
-  * @author Barry Becker
+  * Based on algorithm from Riya Arora. Ported to scala from C++.
+  * @param prices a list of prices to search
   */
-class BuyLowerSolver(var array: IndexedSeq[Int]) {
-
-  private val cache: Array[List[List[Int]]] = Array.fill(array.length) { Nil }
+class BuyLowerSolver(var prices: IndexedSeq[Int]) {
+  private val N: Int = prices.length
+  private val total = Array.ofDim[Int](N)
+  private val num = Array.ofDim[BigInt](N)
 
   def solve(): String = {
-    // loop from the right so we can avoid recursion
-    for (i <- array.length - 1 to 0 by -1)
-      findLongestStartingWith(i)
 
-    new ResultExtractor(cache).getResult
-  }
+    for (i <- 0 until N) {
+      val p = prices(i)
+      val use = (0 +: (0 until i).filter(p < prices(_)).map(total)).max
+      total(i) = use + 1
+      num(i) = if (total(i) == 1) 1 else 0
 
-  private def findLongestStartingWith(i: Int): List[List[Int]] = {
-    val v = array(i)
-    if (cache(i) == Nil)
-      cache(i) = if (i == array.length - 1) List(List(v)) else createLongestList(v, getMaxListToRight(i))
-    cache(i)
-  }
-
-  private def createLongestList(v: Int, list: List[List[Int]]) = list match {
-    case Nil => List(List(v))
-    case head :: Nil if head.exists(v > _) => List(v) +: List(head.filter(v > _))
-    case head :: Nil => List(v +: head)
-    case head :: tail if head.contains(v) => list
-    case head :: tail if head.exists(v > _) => List(v) +: head.filter(_ < v) +: tail
-  }
-
-  /** @return the longest list to the right of i */
-  private def getMaxListToRight(i: Int): List[List[Int]] = {
-    val v = array(i)
-    val lists = cache.slice(i + 1, cache.length).filter(_.head.exists(v > _)).map(list => (list, list.length))
-    var longest = if (lists.nonEmpty) lists.max(Ordering.by((_: (_, Int))._2)) else (Nil, 0)
-    val longestLength = longest._2
-    if (longestLength > 0) {
-      val longestLists = lists.filter(_._2 == longestLength).map(_._1)
-      longest = (longestLists.flatMap(_.head).distinct.toList +: longestLists(0).tail, longestLength)
+      val leftIndices = (i-1) to 0 by -1
+      num(i) += leftIndices.filter(j => total(j) == use && p < prices(j)).map(num).sum
+      leftIndices.filter(j => total(j) == total(i) && p == prices(j)).foreach(j => total(j) -= 1)
     }
-    longest._1
+
+    val outA: Int = total.max
+    val outB: BigInt = (0 until N).filter(total(_) == outA).map(num).sum
+    s"$outA $outB"
   }
 }
