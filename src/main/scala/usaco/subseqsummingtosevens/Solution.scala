@@ -9,6 +9,7 @@ import scala.io.StdIn
 object Solution {
 
   def main(args: Array[String]) {
+
     val num = StdIn.readInt() // num list elements
     val list = Array.ofDim[Int](num)
     for (i <- 0 until num)
