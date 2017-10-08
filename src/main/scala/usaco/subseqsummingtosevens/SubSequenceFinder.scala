@@ -6,7 +6,7 @@ package usaco.subseqsummingtosevens
   */
 class SubSequenceFinder(radix: Int) {
 
-  /** @return logest sequence using quadratic brute force approach */
+  /** @return longest sequence using quadratic brute force approach */
   def findLongestSubSequence2(list: Seq[Int]): Int = {
     for (i <- list.length to 1 by - 1)
       for (j <- 0 to list.length - i)
@@ -30,6 +30,27 @@ class SubSequenceFinder(radix: Int) {
       next = Array.fill[Int](radix)(-1)
     }
     longest
+  }
+
+  /** @return longest sequence using linear approach from USACO provided solution */
+  def findLongestSubSequence3(list: Seq[Int]): Int = {
+    var first: Array[Int] = Array.fill[Int](radix)(Int.MaxValue)
+    var last: Array[Int] = Array.ofDim[Int](radix)
+    first(0) = 0
+    var currPref = 0
+    for (i <- 1 to list.length) {
+      currPref += list(i-1)
+      currPref %= radix
+      first(currPref) = Math.min(first(currPref), i)
+      last(currPref) = i
+    }
+    var ret = 0
+    for (i <- 0 until radix) {
+      if (first(i) <= list.length) {
+        ret = Math.max(ret, last(i) - first(i))
+      }
+    }
+    ret
   }
 
   /** @return true if the specified sub sequence sums to a multiple of the radix */
