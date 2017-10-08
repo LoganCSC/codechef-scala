@@ -5,13 +5,12 @@ import scala.io.StdIn
 /**
  * https://www.hackerrank.com/contests/compsci-club4/challenges/equal-stacks
  */
-object Solution {
+object Solution extends App {
 
-  def main(args: Array[String]) {
-    val stacks = new CylinderStackList(readHeights)
-    stacks.removeBlocksUntilEqual()
-    println(stacks.getMaxHeight)
-  }
+  val stacks = new CylinderStackList(readHeights)
+  stacks.removeBlocksUntilEqual()
+  println(stacks.getMaxHeight)
+
 
   private def readHeights = {
     val stackCounts = StdIn.readLine().split(" ")

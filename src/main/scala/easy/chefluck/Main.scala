@@ -5,12 +5,11 @@ import scala.io.StdIn
 /**
  * http://www.codechef.com/problems/CHEFLUCK
  */
-object Main {
-  def main(args: Array[String]) {
-    val testCount = StdIn.readInt()
-    for (i <- 0 until testCount) {
-      println(count4(StdIn.readInt()))
-    }
+object Main extends App {
+
+  val testCount = StdIn.readInt()
+  for (i <- 0 until testCount) {
+    println(count4(StdIn.readInt()))
   }
 
   def count4(n: Int): Int = {
@@ -21,7 +20,6 @@ object Main {
         return c4
       i += 1
     }
-
     -1
   }
 }

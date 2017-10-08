@@ -2,13 +2,13 @@ package easy.factorial
 
 import scala.io.StdIn
 
-object Main {
-  def main(args: Array[String]) {
-    val testCount = StdIn.readInt()
-    for (i <- 0 until testCount) {
-      println(countTrailingZeros(StdIn.readInt()))
-    }
+object Main extends App {
+
+  val testCount = StdIn.readInt()
+  for (i <- 0 until testCount) {
+    println(countTrailingZeros(StdIn.readInt()))
   }
+
 
   def countTrailingZeros(n: Int): Int = {
     var count = 0

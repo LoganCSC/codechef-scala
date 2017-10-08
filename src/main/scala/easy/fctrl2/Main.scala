@@ -2,12 +2,11 @@ package easy.fctrl2
 
 import scala.io.StdIn
 
-object Main {
-  def main(args: Array[String]) {
-    val testCount = StdIn.readInt()
-    for (i <- 0 until testCount) {
-      println(factorial(StdIn.readInt()))
-    }
+object Main extends App {
+
+  val testCount = StdIn.readInt()
+  for (i <- 0 until testCount) {
+    println(factorial(StdIn.readInt()))
   }
 
   def factorial(i: Int): String = {

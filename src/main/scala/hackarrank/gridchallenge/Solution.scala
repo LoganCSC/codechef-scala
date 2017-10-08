@@ -5,16 +5,15 @@ import scala.io.StdIn
 /**
  * https://www.hackerrank.com/contests/compsci-club7/challenges/grid-challenge
  */
-object Solution {
+object Solution  extends App {
 
-  def main(args: Array[String]) {
-    val numTests = StdIn.readLine().toInt
-    for (i <- 1 to numTests) {
-      val grid = readBoard()
-      //println(grid)
-      println(if (grid.isSortSolvable) "YES" else "NO")
-    }
+  val numTests = StdIn.readLine().toInt
+  for (i <- 1 to numTests) {
+    val grid = readBoard()
+    //println(grid)
+    println(if (grid.isSortSolvable) "YES" else "NO")
   }
+
 
   private def readBoard(): Grid = {
     val dim = StdIn.readLine().toInt

@@ -8,30 +8,28 @@ import scala.io.StdIn
 /**
  * https://www.hackerrank.com/contests/rookierank/challenges/antiprime-numbers
  */
-object Solution {
+object Solution extends App {
 
   // dynamic programming cache,
   // map from anti-prim number to (number of factors, max num factors to this point)
   val cache = mutable.Map[Long, (Int, Int)](1L -> (1, 1))
 
-  def main(args: Array[String]) {
-    val numQueries = StdIn.readInt()    // q
+  val numQueries = StdIn.readInt()    // q
 
-    // warm up the cache
-    var maxFactorsSoFar = 1
+  // warm up the cache
+  var maxFactorsSoFar = 1
 
-    for (i <- 1 to 1000000) {
-      val numFactors = getNumFactors(i)
-      if (numFactors > maxFactorsSoFar)
-        maxFactorsSoFar = numFactors
-      cache.put(i, (numFactors, maxFactorsSoFar))
-    }
-
-    for (query <- 0 until numQueries) {
-      println(getSmallestAntiPrimeBiggerThan(StdIn.readInt()))
-    }
-
+  for (i <- 1 to 1000000) {
+    val numFactors = getNumFactors(i)
+    if (numFactors > maxFactorsSoFar)
+      maxFactorsSoFar = numFactors
+    cache.put(i, (numFactors, maxFactorsSoFar))
   }
+
+  for (query <- 0 until numQueries) {
+    println(getSmallestAntiPrimeBiggerThan(StdIn.readInt()))
+  }
+
 
   def getSmallestAntiPrimeBiggerThan(a: Int): Int = {
     val lastMostFactors = cache(a - 1)._2
