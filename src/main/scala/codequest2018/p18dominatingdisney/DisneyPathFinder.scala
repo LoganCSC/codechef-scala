@@ -1,25 +1,22 @@
 package codequest2018.p18dominatingdisney
 
-
 class DisneyPathFinder(val weights: Seq[Int]) {
 
   case class Path(from: String, to: String, num: Int) {
     def weight = weights(num)
   }
 
-  val destinations = Set("pirates", "splash", "dwarfs", "space")
   val graph = Map(
-    "start" -> Seq(Path("start", "pirates", 0), Path("start", "splash", 2),
-               Path("start", "dwarfs", 4), Path("start", "space", 6)),
+    "start" -> Seq(Path("start", "pirates", 0), Path("start", "splash", 2), Path("start", "dwarfs", 4),
+      Path("start", "space", 6)),
     "pirates" -> Seq(Path("pirates", "splash", 1), Path("pirates", "start", 0)),
     "splash" -> Seq(Path("splash", "pirates", 1), Path("splash", "start", 2), Path("splash", "dwarfs", 3)),
     "dwarfs" -> Seq(Path("dwarfs", "splash", 3), Path("dwarfs", "start", 4), Path("dwarfs", "space", 5)),
     "space" -> Seq(Path("space", "dwarfs", 5), Path("space", "start", 6))
   )
 
-  // Terminate the search of the path len exceeds the sum of all path weights
+  // Terminate search if the path len exceeds the sum of all path weights. Safe to assume shortest is less than this?
   private val maxPathLen = weights.sum
-
 
   def findShortestPath(): String = {
     var shortestDistance: Int = Int.MaxValue
@@ -44,19 +41,11 @@ class DisneyPathFinder(val weights: Seq[Int]) {
     val currentPath = pathPrefix.lastOption
     val to = if (currentPath.isDefined) currentPath.get.to else "start"
 
-    if (visitCount.keys.size == 4) {
-      println("Visited everything! returning:  " + (pathPrefix :+ currentPath.get))
-      Seq(pathPrefix)
-    }
+    if (visitCount.keys.size == 4) Seq(pathPrefix)
     else {
       var pathSeqs: Seq[Seq[Path]] = Seq()
-
       val current = if (currentPath.isDefined) currentPath.get.to else "start"
       val childPaths = graph(current)
-      //println("childPaths = " + childPaths.mkString(", "))
-      //println("pathPrefix = " + pathPrefix.mkString(", "))
-      //println("current = " + currentPath)
-      //println("unvisited = " + unvisited.mkString(", "))
 
       for (childPath <- childPaths.sortBy(_.weight)) {
         val newPathPrefix = pathPrefix :+ childPath
