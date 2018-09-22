@@ -4,30 +4,27 @@ import scala.io.StdIn
 
 /**
   * http://codeforces.com/group/Jr4sdXmPmx/contest/218941/problem/H
-  * This version hits time limit exceeded on test case 10
   */
 object Solution extends App {
 
+  /** @return array with int values giving runs of same characters */
   def processPattern(str: String): Array[Int] = {
-    val len = str.length - 1
-    val a = for (i <- 0 until len) yield if (str(i) == str(i + 1)) 1 else 0
-    val aa = Array.ofDim[Int](len)
-    aa(0) = a(0)
 
-    for (i <- 1 until len) {
-      aa(i) = aa(i - 1) + a(i)
+    val a = Array.ofDim[Int](str.length)
+    var total = 0
+
+    for (i <- 1 until str.length) {
+      if (str(i) == str(i - 1))
+        total += 1
+      a(i) = total
     }
-    aa
+    a
   }
 
   def executeQueries(num: Int, arr: Array[Int]): Unit = {
     for (i <- 0 until num) {
-      val values = StdIn.readLine().split(" ")
-      val (left, right) = (values(0).toInt, values(1).toInt)
-      if (left == 1)
-        println(arr(right - 2))
-      else
-        println(arr(right - 2) - arr(left - 2))
+      val Array(left, right) = StdIn.readLine.split(" ").map(_.toInt - 1)
+      println(arr(right) - arr(left))
     }
   }
 
