@@ -3,7 +3,7 @@ package codeforces.igorandwaytowork
 import scala.io.StdIn
 
 /**
-  * http://codeforces.com/group/Jr4sdXmPmx/contest/218941/problem/H
+  * http://codeforces.com/group/Jr4sdXmPmx/contest/218941/problem/I
   */
 object Solution extends App {
 
