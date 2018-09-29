@@ -21,15 +21,15 @@ object Solution extends App {
     a
   }
 
-  def executeQueries(num: Int, arr: Array[Int]): Unit = {
-    for (i <- 0 until num) {
+  def executeQueries(num: Int, arr: Array[Int]): Seq[Int] = {
+    (0 until num).map(i => {
       val Array(left, right) = StdIn.readLine.split(" ").map(_.toInt - 1)
-      println(arr(right) - arr(left))
-    }
+      arr(right) - arr(left)
+    })
   }
 
   val pattern = StdIn.readLine()
   val numQueries = StdIn.readInt()
   val arr = processPattern(pattern)
-  executeQueries(numQueries, arr)
+  println(executeQueries(numQueries, arr).mkString("\n"))
 }

@@ -21,6 +21,7 @@ object Solution extends App {
 
   case class CityMap(lines: Seq[String]) {
 
+
     val home: Location = findLocation(HOME)
     val office: Location = findLocation(OFFICE)
 
@@ -31,27 +32,41 @@ object Solution extends App {
       var nbrs =  List[Position]()
       val loc = pos.location
       val turns = pos.numTurns
-      // avoid going back to where we just came from
       for (dir <- DIRECTIONS) {
         dir match {
           case UP =>
-            if (isOpen(loc, -1, 0) && pos.direction != DOWN)
-              nbrs +:= Position((loc._1 - 1, loc._2), UP, if (pos.direction == UP) turns else turns + 1)
+            if (isOpen(loc, -1, 0) && pos.direction != DOWN) {
+              val newPos = Position((loc._1 - 1, loc._2), UP, if (pos.direction == UP) turns else turns + 1)
+              if (newPos.numTurns < 2 || rowOrColMatchesOffice(newPos.location))
+                nbrs +:= newPos
+            }
           case DOWN =>
-            if (isOpen(loc, 1, 0) && pos.direction != UP)
-              nbrs +:= Position((loc._1 + 1, loc._2), DOWN, if (pos.direction == DOWN) turns else turns + 1)
+            if (isOpen(loc, 1, 0) && pos.direction != UP) {
+              val newPos = Position((loc._1 + 1, loc._2), DOWN, if (pos.direction == DOWN) turns else turns + 1)
+              if (newPos.numTurns < 2 || rowOrColMatchesOffice(newPos.location))
+                nbrs +:= newPos
+            }
           case LEFT =>
-            if (isOpen(loc, 0, -1) && pos.direction != RIGHT)
-              nbrs +:= Position((loc._1, loc._2 - 1), LEFT, if (pos.direction == LEFT) turns else turns + 1)
+            if (isOpen(loc, 0, -1) && pos.direction != RIGHT) {
+              val newPos = Position((loc._1, loc._2 - 1), LEFT, if (pos.direction == LEFT) turns else turns + 1)
+              if (newPos.numTurns < 2 || rowOrColMatchesOffice(newPos.location))
+                nbrs +:= newPos
+            }
+
           case RIGHT =>
-            if (isOpen(loc, 0, 1) && pos.direction != LEFT)
-              nbrs +:= Position((loc._1, loc._2 + 1), RIGHT, if (pos.direction == RIGHT) turns else turns + 1)
+            if (isOpen(loc, 0, 1) && pos.direction != LEFT) {
+              val newPos = Position((loc._1, loc._2 + 1), RIGHT, if (pos.direction == RIGHT) turns else turns + 1)
+              if (newPos.numTurns < 2 || rowOrColMatchesOffice(newPos.location))
+                nbrs +:= newPos
+            }
         }
       }
       nbrs
     }
 
     def startingPositions(): Seq[Position] = neighborsOf(Position(home, "no direction", -1))
+
+    private def rowOrColMatchesOffice(loc: Location): Boolean = loc._1 == office._1 || loc._2 == office._2
 
     private def isOpen(loc: Location, rowOffset: Int, columnOffset: Int): Boolean = {
       val newLoc: Location = (loc._1 + rowOffset, loc._2 + columnOffset)
