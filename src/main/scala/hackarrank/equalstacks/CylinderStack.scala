@@ -12,7 +12,7 @@ class CylinderStack(cylinderHeights: Array[Int])  {
   private var currentHeight = stack.sum
 
   /** remove the top cylinder from the top of the stack and update the height. */
-  def removeTop() = currentHeight -= stack.remove(0)
+  def removeTop(): Unit = currentHeight -= stack.remove(0)
 
-  def getHeight = currentHeight
+  def getHeight: Int = currentHeight
 }
