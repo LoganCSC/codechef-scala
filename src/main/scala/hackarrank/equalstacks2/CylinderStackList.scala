@@ -12,26 +12,27 @@ class CylinderStackList(cylinderHeights: Seq[Array[Int]]) {
   def heightAfterRemovingTallestUntilEqual(): Int = {
 
     var htMap = Map[Int, Int]()
+    val heightLimit = cylinderHeights.map(_.sum).min
     for (a <- cylinderHeights) {
-      htMap = addHeights(htMap, a)
+      htMap = addHeights(htMap, a, heightLimit)
     }
-    //println("htMap " + htMap.mkString(", "))
     val filtered = htMap.filter(p => p._2 == cylinderHeights.length)
-    //println("filtered = " + filtered.mkString(", "))
     filtered.keys.max
   }
 
-  private def addHeights(htMap: Map[Int, Int], a: Array[Int]): Map[Int, Int] = {
+  private def addHeights(htMap: Map[Int, Int], a: Array[Int], heightLimit: Int): Map[Int, Int] = {
     var sum = 0
     var map = if (htMap.contains(0)) htMap + (0 -> (htMap(0) + 1)) else htMap + (0 -> 1)
 
-    for (i <- a.reverse) {
-      sum += i
+    var i = a.length - 1
+    while (i >= 0 && sum < heightLimit) {
+      sum += a(i)
       if (map.contains(sum)) {
         map += (sum -> (map(sum) + 1))
       } else {
         map += (sum -> 1)
       }
+      i -= 1
     }
     map
   }

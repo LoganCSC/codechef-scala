@@ -71,15 +71,14 @@ class SolutionTest extends FunSuite {
 
   def runTest(data: Seq[Array[Int]], expMaxEqual: Int): Unit = {
     // approach 1
-    /*
     val stacks = new equalstacks.CylinderStackList(data)
     stacks.removeBlocksUntilEqual()
     assert(stacks.allHeightsEqual())
     assertResult(expMaxEqual) {
       stacks.getMaxHeight
-    }*/
+    }
 
-    // approach 2
+    // approach 2 - this is faster if the stacks all have very unequal heights.
     val stacks2 = new equalstacks2.CylinderStackList(data)
     assertResult(expMaxEqual) {
       stacks2.heightAfterRemovingTallestUntilEqual()
