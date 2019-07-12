@@ -20,6 +20,7 @@ class CylinderStackList(cylinderHeights: Seq[Array[Int]]) {
     filtered.keys.max
   }
 
+  /** @return map from sum to number of blocks in the stack */
   private def addHeights(htMap: Map[Int, Int], a: Array[Int], heightLimit: Int): Map[Int, Int] = {
     var sum = 0
     var map = if (htMap.contains(0)) htMap + (0 -> (htMap(0) + 1)) else htMap + (0 -> 1)
