@@ -3,10 +3,10 @@ package codequest2018.p18dominatingdisney
 class DisneyPathFinder(val weights: Seq[Int]) {
 
   case class Path(from: String, to: String, num: Int) {
-    def weight = weights(num)
+    def weight: Int = weights(num)
   }
 
-  val graph = Map(
+  val graph: Map[String, Seq[Path]] = Map(
     "start" -> Seq(Path("start", "pirates", 0), Path("start", "splash", 2), Path("start", "dwarfs", 4),
       Path("start", "space", 6)),
     "pirates" -> Seq(Path("pirates", "splash", 1), Path("pirates", "start", 0)),

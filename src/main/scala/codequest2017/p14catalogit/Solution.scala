@@ -9,7 +9,6 @@ import scala.io.StdIn
   */
 object Solution extends App {
 
-
   val cache = mutable.Map[Long, (Int, Int)](1L -> (1, 1))
 
   val numQueries = StdIn.readInt()    // q

@@ -1,6 +1,5 @@
 package codequest2017.p14catalogit
 
-
 import org.scalatest.FunSuite
 
 /**
