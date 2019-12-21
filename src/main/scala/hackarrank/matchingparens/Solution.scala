@@ -14,6 +14,6 @@ import scala.io.StdIn
  */
 object Solution extends App {
 
-    val pf = new ParenFinder1()
+    val pf = new ParenFinder()
     println(pf.findParenCombinations(3).mkString("\n"))
 }

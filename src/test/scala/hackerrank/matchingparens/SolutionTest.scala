@@ -1,13 +1,13 @@
 package hackerrank.matchingparens
 
-import hackarrank.matchingparens.{ParenFinder1, ParenFinder2, Solution}
+import hackarrank.matchingparens.{ParenFinder, Solution}
 import org.scalatest.FunSuite
 import testsupport.TestSupport.strip
 
 
 class SolutionTest extends FunSuite {
 
-  val pf = new ParenFinder2()
+  val pf = new ParenFinder()
 
   test("test n = 2") {
     verifyCombos(2, Seq("(())", "()()") )
@@ -125,9 +125,7 @@ class SolutionTest extends FunSuite {
 
   def verifyCombos(n: Int, expectedResult: Seq[String]): Unit = {
     val result1 = pf.findParenCombinations(n)
-    //val result2 = new ParenFinder2().findParenCombinations(n)
     verifyResult(n, expectedResult, result1, "finder1")
-    //verifyResult(n, expectedResult, result2, "finder2")
   }
 
   def verifyResult(n: Int, expectedResult: Seq[String], actResult: Seq[String], msg: String): Unit = {
