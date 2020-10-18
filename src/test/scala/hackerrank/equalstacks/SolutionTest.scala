@@ -70,8 +70,7 @@ class SolutionTest extends FunSuite {
   }
 
   def runTest(data: Seq[Array[Int]], expMaxEqual: Int): Unit = {
-    // approach 1 - takes about 19 sec
-
+    // approach 1 - takes about 20 sec
     val stacks = new equalstacks.CylinderStackList(data)
     stacks.removeBlocksUntilEqual()
     assert(stacks.allHeightsEqual())

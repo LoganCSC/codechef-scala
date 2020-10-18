@@ -13,7 +13,7 @@ object Solution {
   // The constant to mod by to keep power function from exploding
   val C = 1000000007L
   // dynamic programming cache
-  val cache = mutable.Map[(BigDecimal, Long), BigDecimal]()
+  private val cache = mutable.Map[(BigDecimal, Long), BigDecimal]()
 
 
   def expNumCells(a: Int, b: Int, t: Long): Long =
