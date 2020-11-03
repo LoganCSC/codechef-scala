@@ -1,14 +1,13 @@
 package hackerrank.equalstacks
 
-import hackarrank.equalstacks
-import hackarrank.equalstacks2
 import org.scalatest.FunSuite
-
 import scala.util.Random
-import SolutionTest.MAX_CYL_HT
+import SolutionTest._
+import hackarrank.equalstacks.{v1, v2, v3}
 
 object SolutionTest {
   val MAX_CYL_HT = 100
+  val VERSION_TO_TEST = 1
 }
 
 /**
@@ -54,7 +53,7 @@ class SolutionTest extends FunSuite {
 
 
   test("test performance for random unequal stacks of max size 1000 with small height") {
-    runTest(createUnequalLengthRandomArrays(3, 1000, 5), 1647)
+    runTest(createUnequalLengthRandomArrays(3, 1000, 5), 745)
   }
 
   test("test performance for random unequal stacks of max size 10000 with small height") {
@@ -66,22 +65,19 @@ class SolutionTest extends FunSuite {
   }
 
   test("test performance for 20 random unequal stacks of max size 4000000 with small height") {
-    runTest(createUnequalLengthRandomArrays(10, 4000000, 3), 571658)
+    runTest(createUnequalLengthRandomArrays(10, 4000000, 3), 36119)
   }
 
   def runTest(data: Seq[Array[Int]], expMaxEqual: Int): Unit = {
-    // approach 1 - takes about 20 sec
-    val stacks = new equalstacks.CylinderStackList(data)
-    stacks.removeBlocksUntilEqual()
-    assert(stacks.allHeightsEqual())
-    assertResult(expMaxEqual) {
-      stacks.getMaxHeight
+
+    val stacks = VERSION_TO_TEST match {
+      case 1 => new v1.CylinderStackList(data) // takes about 39 sec  O(NNK)
+      case 2 => new v2.CylinderStackList(data) // faster if stacks all have very unequal heights. Takes about 13 sec  O(NK)
+      case 3 => new v2.CylinderStackList(data) // Takes about 13 sec  O(NK)
     }
 
-    // approach 2 - this is faster if the stacks all have very unequal heights. Takes about 11 sec
-    val stacks2 = new equalstacks2.CylinderStackList(data)
     assertResult(expMaxEqual) {
-      stacks2.heightAfterRemovingTallestUntilEqual()
+      stacks.findMaxHeightWhenEqual()
     }
   }
 
@@ -97,9 +93,9 @@ class SolutionTest extends FunSuite {
       yield Array.fill[Int](m)(rnd.nextInt(maxCylinderHt) + 1)
   }
 
-  def createUnequalLengthRandomArrays(n: Int = 3, m: Int = 100, maxCylinderHt: Int = MAX_CYL_HT): Seq[Array[Int]] = {
+  def createUnequalLengthRandomArrays(numStacks: Int = 3, averageHeight: Int = 100, maxCylinderHt: Int = MAX_CYL_HT): Seq[Array[Int]] = {
     val rnd = new Random(1)
-    for (i <- 0 until n)
-      yield Array.fill[Int](rnd.nextInt(m) + 1)(rnd.nextInt(maxCylinderHt) + 1)
+    for (i <- 0 until numStacks)
+      yield Array.fill[Int](rnd.nextInt(2 * averageHeight) + 1)(rnd.nextInt(maxCylinderHt) + 1)
   }
 }

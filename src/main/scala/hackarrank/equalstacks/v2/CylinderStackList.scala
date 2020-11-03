@@ -1,16 +1,18 @@
-package hackarrank.equalstacks2
+package hackarrank.equalstacks.v2
+
+import hackarrank.equalstacks.ICylinderStackList
 
 /**
   * In this approach, find the tallest subset sum height which has the same value for all stacks.
   * Take the sums of all possible heights (from the bottom) and adds them to a map where the key is the
   * height and the value is the count of stacks that have that value.
   * The largest key that has value == number of stacks is the answer.
+  *
   * @param cylinderHeights arrays of heights. Each array gives heights from top to bottom in the stack.
   */
-class CylinderStackList(cylinderHeights: Seq[Array[Int]]) {
+class CylinderStackList(cylinderHeights: Seq[Array[Int]]) extends ICylinderStackList {
 
-  def heightAfterRemovingTallestUntilEqual(): Int = {
-
+  def findMaxHeightWhenEqual(): Int = {
     var htMap = Map[Int, Int]() // contains all possible heights for all stacks as keys
     val heightLimit = cylinderHeights.map(_.sum).min
     for (stack <- cylinderHeights) {
@@ -33,4 +35,5 @@ class CylinderStackList(cylinderHeights: Seq[Array[Int]]) {
     }
     map
   }
+
 }

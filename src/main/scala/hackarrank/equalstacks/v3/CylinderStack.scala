@@ -1,4 +1,4 @@
-package hackarrank.equalstacks
+package hackarrank.equalstacks.v3
 
 import scala.collection.mutable.ListBuffer
 

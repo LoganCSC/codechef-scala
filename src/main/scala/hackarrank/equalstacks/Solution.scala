@@ -1,19 +1,22 @@
 package hackarrank.equalstacks
 
-import scala.io.StdIn
 
-/**
- * https://www.hackerrank.com/contests/compsci-club4/challenges/equal-stacks
- */
-object Solution extends App {
+class Solution {
 
-  val stacks = new CylinderStackList(readHeights)
-  stacks.removeBlocksUntilEqual()
-  println(stacks.getMaxHeight)
+  import scala.io.StdIn
 
+  /**
+    * https://www.hackerrank.com/contests/compsci-club4/challenges/equal-stacks
+    */
+  object Solution extends App {
 
-  private def readHeights = {
-    val stackCounts = StdIn.readLine().split(" ")
-    for (n <- stackCounts) yield StdIn.readLine().split(" ").map(_.toInt)
+    val stacks = new v1.CylinderStackList(readHeights)
+    println(stacks.findMaxHeightWhenEqual())
+
+    private def readHeights = {
+      val stackCounts = StdIn.readLine().split(" ")
+      for (n <- stackCounts) yield StdIn.readLine().split(" ").map(_.toInt)
+    }
   }
+
 }
